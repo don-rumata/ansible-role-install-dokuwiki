@@ -1,0 +1,68 @@
+---
+- name: Config local.php DokuWiki (may be dirty hack)
+  when:
+    - ansible_system == 'Linux'
+  become: yes
+  template:
+    src: dokuwiki-local.php.j2
+    dest: '{{ dokuwiki_fs_dir }}/conf/local.php'
+    owner: www-data
+    group: www-data
+    mode: '{{ dokuwiki_chmod }}'
+    backup: yes
+
+# https://docs.ansible.com/ansible/latest/user_guide/playbooks_filters.html#encrypting-and-checksumming-strings-and-passwords
+- name: Config users.auth.php DokuWiki (may be dirty hack)
+  when:
+    - ansible_system == 'Linux'
+  become: yes
+  template:
+    src: dokuwiki-users.auth.php.j2
+    dest: '{{ dokuwiki_fs_dir }}/conf/users.auth.php'
+    owner: www-data
+    group: www-data
+    mode: '{{ dokuwiki_chmod }}'
+    backup: yes
+
+- name: Config acl.auth.php DokuWiki (may be dirty hack)
+  when: ansible_system == 'Linux'
+  become: yes
+  template:
+    src: dokuwiki-acl.auth.php.j2
+    dest: '{{ dokuwiki_fs_dir }}/conf/acl.auth.php'
+    owner: www-data
+    group: www-data
+    mode: '{{ dokuwiki_chmod }}'
+    backup: yes
+
+# - name: Delete install.php
+#   when:
+#     - ansible_system == 'Linux'
+#   become: yes
+#   file:
+#     path: '{{ dokuwiki_fs_dir }}/install.php'
+#     state: absent
+
+###
+
+- name: Apache restart
+  when:
+    - ansible_system == 'Linux'
+    - dokuwiki_web_server_name == 'apache'
+    # - apache_config_dokuwiki_state.changed == true
+    - apache_config_dokuwiki_state.changed
+  become: yes
+  service:
+    name: apache2
+    state: restarted
+
+- name: NGINX restart
+  when:
+    - ansible_system == 'Linux'
+    - dokuwiki_web_server_name == 'nginx'
+    # - nginx_config_dokuwiki_state.changed == true
+    - nginx_config_dokuwiki_state.changed
+  become: yes
+  service:
+    name: nginx
+    state: restarted

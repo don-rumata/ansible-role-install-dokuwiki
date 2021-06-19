@@ -1,0 +1,22 @@
+# https://www.dokuwiki.org/install:ubuntu#apache_configuration_for_running_dokuwiki_in_public_html
+Alias {{ dokuwiki_www_dir }} {{ dokuwiki_fs_dir }}
+<Directory {{ dokuwiki_fs_dir }}>
+        Options +FollowSymLinks
+        AllowOverride All
+        DirectoryIndex index.php
+        Order allow,deny
+        Allow from all
+</Directory>
+AliasMatch ^{{ dokuwiki_www_dir }}/sites/[^/]+$      {{ dokuwiki_fs_dir }}/
+AliasMatch ^{{ dokuwiki_www_dir }}/sites/[^/]+/(.*)$ {{ dokuwiki_fs_dir }}/$1
+
+# https://www.dokuwiki.org/security#deny_directory_access_in_apache
+<LocationMatch "/(data|conf|bin|inc|vendor)/">
+    Order allow,deny
+    Deny from all
+    Satisfy All
+</LocationMatch>
+
+#
+# File from template https://github.com/don-rumata/ansible-role-install-dokuwiki
+#

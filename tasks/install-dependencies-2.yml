@@ -1,0 +1,63 @@
+---
+- name: Disable install Apache
+  when:
+    - ansible_os_family == 'Debian'
+    - ansible_pkg_mgr == 'apt'
+    - dokuwiki_web_server_name != 'apache'
+  become: yes
+  # NOT FUCKING WORK
+  # dpkg_selections:
+  #   name: apache2
+  #   selection: hold
+  # https://www.tecmint.com/disable-lock-blacklist-package-updates-ubuntu-debian-apt/
+  environment:
+    LANG: C
+    LC_ALL: C
+  command: apt-mark hold apache2
+  register: apache_disable_install
+  changed_when: ( 'apache2 set on hold.' in apache_disable_install.stdout )
+
+# https://www.dokuwiki.org/requirements
+- name: Install deps 4 DokuWiki 4 Debian based distro
+  when:
+    # - ansible_distribution == 'Ubuntu'
+    - ansible_os_family == 'Debian'
+    - ansible_pkg_mgr == 'apt'
+  become: yes
+  apt:
+    name:
+      # 4 пакета ниже - минимальный набор при котором всё вроде бы пашет (ну логиниться могу, настройки менять могу, вот это всё).
+      - php
+      - php-fpm
+      - php-xml
+      - php-mbstring
+      # Всё чё ниже - под вопрсом. Пакеты были указаны в старом руководстве. На сколько актуально щас - хзхзхз.
+      - php-cli
+      - php-cgi
+      - php-zip
+      # А эти подсмотрены у apt install dokuwiki на ubuntu 20.04
+      - php-curl
+      - php-geshi
+      # - php-ldap
+      # # - php-phpseclib
+      # # - php-random-compat
+      # - fontconfig
+      # # - fonts-droid-fallback
+      # # - fonts-noto-mono
+      # # - fonts-urw-base35
+      # - ghostscript
+      # # - gsfonts
+      # - hicolor-icon-theme
+      - imagemagick
+      # - poppler-data
+    state: present
+    # install_recommends: yes
+
+- name: Get installed status php
+  when: ansible_system == 'Linux'
+  become: yes
+  block:
+    - package_facts:
+    # Превращаем "1:7.2+60ubuntu1" в "7.2". Если на bash: LC_ALL=C aptitude show php | grep ^Version | awk '{print $2}' | cut -d ':' -f 2 | cut -d '+' -f 1
+    - set_fact:
+        php_installed_version_fact: "{{ ansible_facts.packages['php'][0].version.split(':')[1].split('+')[0] }}"

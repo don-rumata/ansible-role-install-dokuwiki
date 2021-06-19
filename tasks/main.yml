@@ -1,0 +1,15 @@
+---
+- import_tasks: update-cache.yml
+  when: ansible_virtualization_type == 'docker'
+
+- import_tasks: install-dependencies.yml
+
+- import_tasks: install-dependencies-2.yml
+
+- import_tasks: install-web-server-{{ dokuwiki_web_server_name }}.yml
+
+- import_tasks: install-dokuwiki.yml
+
+- import_tasks: config-dokuwiki.yml
+
+- import_tasks: check-dokuwiki.yml

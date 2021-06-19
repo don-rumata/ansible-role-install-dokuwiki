@@ -1,0 +1,38 @@
+---
+# https://superuser.com/a/899688
+# https://unix.stackexchange.com/a/365990
+- name: Create directory structure
+  when: ansible_system == 'Linux'
+  become: yes
+  file:
+    path: '{{ dokuwiki_fs_dir }}'
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: '{{ dokuwiki_chmod }}'
+
+- name: Download and extact DokuWiki stable
+  when: ansible_system == 'Linux'
+  become: yes
+  unarchive:
+    src: '{{ dokuwiki_url_archive }}'
+    dest: '{{ dokuwiki_fs_dir }}'
+    remote_src: yes
+    owner: www-data
+    group: www-data
+    mode: '{{ dokuwiki_chmod }}'
+    extra_opts:
+      - --strip-components=1
+  # notify:
+  #   - dokuwiki-update-index
+
+- name: Download and extact DokuWiki stable
+  when: ansible_system == 'Linux'
+  become: yes
+  block:
+    - slurp:
+        path: '{{ dokuwiki_fs_dir }}/VERSION'
+      register: dokuwiki_installed_version
+    # Пока не знаю зачем, но пусть будет.
+    - set_fact:
+        dokuwiki_installed_version_fact: "{{ dokuwiki_installed_version['content'] | b64decode | trim }}"

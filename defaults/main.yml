@@ -1,0 +1,31 @@
+---
+#--- Distrib settings ---#
+
+# dokuwiki_url_archive: http://10.10.10.10/soft/dokuwiki/dokuwiki-stable.tgz
+dokuwiki_url_archive: https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz
+
+#--- Local FS settings ---#
+
+dokuwiki_fs_dir: /var/www/dokuwiki
+dokuwiki_chmod: u+rw,g+rw,o-rwx
+
+#--- Webserver settings ---#
+
+# dokuwiki_web_server_name: apache
+# dokuwiki_web_server_name: lighttpd
+dokuwiki_web_server_name: nginx
+
+dokuwiki_www_dir: /dokuwiki
+dokuwiki_www_port: 80
+
+# This: /etc/nginx/sites-enabled/80-{{ dokuwiki_web_server_config_name }}.conf
+dokuwiki_web_server_config_name: dokuwiki
+
+#--- Admin settings  ---#
+
+dokuwiki_admin_login: sysadmin
+dokuwiki_admin_password: qazwsxedc
+dokuwiki_admin_email: mail@example.com
+dokuwiki_admin_real_name: Malcolm Reynolds
+dokuwiki_title: My shiny metal dokuwiki
+dokuwiki_interface_lang: en

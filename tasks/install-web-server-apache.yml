@@ -1,0 +1,104 @@
+---
+- name: Install Apache
+  when:
+    - ansible_system == 'Linux'
+  become: yes
+  package:
+    name:
+      - apache2
+    state: present
+
+- name: Disable 000-default.conf
+  when:
+    - ansible_system == 'Linux'
+  become: yes
+  command: a2dissite 000-default.conf
+  args:
+    removes: /etc/apache2/sites-enabled/000-default.conf
+
+- name: Configure Apache config 4 DokuWiki
+  when:
+    - ansible_system == 'Linux'
+  become: yes
+  template:
+    src: dokuwiki-apache.j2
+    dest: /etc/apache2/sites-available/080-{{ dokuwiki_web_server_config_name }}.conf
+    mode: '644'
+    backup: yes
+  register: apache_config_dokuwiki_state
+
+- name: Enable DokuWiki site
+  when:
+    - ansible_system == 'Linux'
+  become: yes
+  command: a2ensite 080-{{ dokuwiki_web_server_config_name }}.conf
+  args:
+    creates: /etc/apache2/sites-enabled/080-{{ dokuwiki_web_server_config_name }}.conf
+
+# # https://stackoverflow.com/a/26098212
+# - name: Enable DokuWiki site
+#   when:
+#     - ansible_system == 'Linux'
+#   become: yes
+#   file:
+#     src: /etc/apache2/sites-available/080-{{ dokuwiki_web_server_config_name }}.conf
+#     dest: /etc/apache2/sites-enabled/080-{{ dokuwiki_web_server_config_name }}.conf
+#     state: link
+
+- name: Config port
+  when:
+    - ansible_system == 'Linux'
+  become: yes
+  lineinfile:
+    dest: /etc/apache2/ports.conf
+    line: 'Listen {{ dokuwiki_www_port }}'
+    insertafter: '^# /etc/apache2/sites-enabled/000-default.conf'
+    backup: yes
+  tags:
+    - www-port
+
+# - name: Comment default port
+#   when:
+#     - ansible_system == 'Linux'
+#   become: yes
+#   replace:
+#     path: /etc/apache2/ports.conf
+#     regexp: "^Listen 80"
+#     replace: '# Listen 80'
+#     backup: yes
+#   tags:
+#     - www-port
+
+- name: Validate Apache configuration
+  when:
+    - ansible_system == 'Linux'
+  become: yes
+  command: apache2ctl configtest
+  register: apache_configtest
+  changed_when: apache_configtest.rc != 0
+
+- name: Enable and start Apache service
+  when:
+    - ansible_system == 'Linux'
+  become: yes
+  service:
+    name: apache2
+    state: started
+    enabled: yes
+
+# https://www.dokuwiki.org/install:ubuntu#apache_configuration_for_running_dokuwiki_in_public_html
+- name: Enable Apache module userdir
+  when:
+    - ansible_system == 'Linux'
+  become: yes
+  command: a2enmod userdir
+  args:
+    creates: /etc/apache2/mods-enabled/userdir.conf
+
+- name: Enable Apache module rewrite
+  when:
+    - ansible_system == 'Linux'
+  become: yes
+  command: a2enmod rewrite
+  args:
+    creates: /etc/apache2/mods-enabled/rewrite.load
