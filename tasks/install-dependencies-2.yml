@@ -20,11 +20,12 @@
 # https://www.dokuwiki.org/requirements
 - name: Install deps 4 DokuWiki 4 Debian based distro
   when:
-    # - ansible_distribution == 'Ubuntu'
-    - ansible_os_family == 'Debian'
-    - ansible_pkg_mgr == 'apt'
+    # # - ansible_distribution == 'Ubuntu'
+    # - ansible_os_family == 'Debian'
+    # - ansible_pkg_mgr == 'apt'
+    - ansible_system == 'Linux'
   become: yes
-  apt:
+  package:
     name:
       # 4 пакета ниже - минимальный набор при котором всё вроде бы пашет (ну логиниться могу, настройки менять могу, вот это всё).
       - php
@@ -48,7 +49,7 @@
       # - ghostscript
       # # - gsfonts
       # - hicolor-icon-theme
-      - imagemagick
+      # - imagemagick
       # - poppler-data
     state: present
     # install_recommends: yes
@@ -61,3 +62,13 @@
     # Превращаем "1:7.2+60ubuntu1" в "7.2". Если на bash: LC_ALL=C aptitude show php | grep ^Version | awk '{print $2}' | cut -d ':' -f 2 | cut -d '+' -f 1
     - set_fact:
         php_installed_version_fact: "{{ ansible_facts.packages['php'][0].version.split(':')[1].split('+')[0] }}"
+      when:
+        - ansible_os_family == 'Debian'
+        - ansible_pkg_mgr == 'apt'
+    - set_fact:
+        php_installed_version_fact: "{{ ansible_facts.packages['php'][0].version.split('.', 2)[:-1] | join('.') }}"
+      when:
+        - ansible_os_family == 'RedHat'
+        - ansible_pkg_mgr == 'dnf'
+
+# - pause:

@@ -2,19 +2,30 @@
 - name: Install Apache
   when:
     - ansible_system == 'Linux'
+    - ansible_os_family != 'RedHat'
   become: yes
   package:
     name:
       - apache2
     state: present
 
+- name: Install Apache 4 CentOS 8+\RHEL
+  when:
+    - ansible_os_family == 'RedHat'
+    - ansible_pkg_mgr == 'dnf'
+  become: yes
+  package:
+    name:
+      - httpd
+    state: present
+
 - name: Disable 000-default.conf
   when:
     - ansible_system == 'Linux'
   become: yes
-  command: a2dissite 000-default.conf
-  args:
-    removes: /etc/apache2/sites-enabled/000-default.conf
+  file:
+    path: /etc/apache2/sites-enabled/000-default.conf
+    state: absent
 
 - name: Configure Apache config 4 DokuWiki
   when:
@@ -27,23 +38,15 @@
     backup: yes
   register: apache_config_dokuwiki_state
 
+# https://stackoverflow.com/a/26098212
 - name: Enable DokuWiki site
   when:
     - ansible_system == 'Linux'
   become: yes
-  command: a2ensite 080-{{ dokuwiki_web_server_config_name }}.conf
-  args:
-    creates: /etc/apache2/sites-enabled/080-{{ dokuwiki_web_server_config_name }}.conf
-
-# # https://stackoverflow.com/a/26098212
-# - name: Enable DokuWiki site
-#   when:
-#     - ansible_system == 'Linux'
-#   become: yes
-#   file:
-#     src: /etc/apache2/sites-available/080-{{ dokuwiki_web_server_config_name }}.conf
-#     dest: /etc/apache2/sites-enabled/080-{{ dokuwiki_web_server_config_name }}.conf
-#     state: link
+  file:
+    src: /etc/apache2/sites-available/080-{{ dokuwiki_web_server_config_name }}.conf
+    dest: /etc/apache2/sites-enabled/080-{{ dokuwiki_web_server_config_name }}.conf
+    state: link
 
 - name: Config port
   when:
@@ -91,14 +94,16 @@
   when:
     - ansible_system == 'Linux'
   become: yes
-  command: a2enmod userdir
-  args:
-    creates: /etc/apache2/mods-enabled/userdir.conf
+  file:
+    src: /etc/apache2/mods-available/userdir.conf
+    dest: /etc/apache2/mods-enabled/userdir.conf
+    state: link
 
 - name: Enable Apache module rewrite
   when:
     - ansible_system == 'Linux'
   become: yes
-  command: a2enmod rewrite
-  args:
-    creates: /etc/apache2/mods-enabled/rewrite.load
+  file:
+    src: /etc/apache2/mods-available/rewrite.load
+    dest: /etc/apache2/mods-enabled/rewrite.load
+    state: link
