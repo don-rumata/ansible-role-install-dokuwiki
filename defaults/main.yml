@@ -2,6 +2,9 @@
 #--- Distrib settings ---#
 
 # dokuwiki_url_archive: http://10.10.10.10/soft/dokuwiki/dokuwiki-stable.tgz
+# dokuwiki_url_archive: https://download.dokuwiki.org/src/dokuwiki/dokuwiki-oldstable.tgz
+# dokuwiki_url_archive: http://github.com/splitbrain/dokuwiki/tarball/master
+# dokuwiki_url_archive: https://download.dokuwiki.org/out/dokuwiki-51907416a10f9ac6818c982ae15d7b2a.tgz
 dokuwiki_url_archive: https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz
 
 #--- Local FS settings ---#
