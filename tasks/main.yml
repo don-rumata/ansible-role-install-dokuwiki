@@ -8,6 +8,8 @@
 
 - import_tasks: install-web-server-{{ dokuwiki_web_server_name }}.yml
 
+- import_tasks: config-web-server-{{ dokuwiki_web_server_name }}-{{ ansible_os_family | lower }}.yml
+
 - import_tasks: install-dokuwiki.yml
 
 - import_tasks: config-dokuwiki.yml

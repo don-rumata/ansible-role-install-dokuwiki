@@ -49,7 +49,7 @@
       # - ghostscript
       # # - gsfonts
       # - hicolor-icon-theme
-      # - imagemagick
+      - imagemagick
       # - poppler-data
     state: present
     # install_recommends: yes
