@@ -19,3 +19,33 @@
     regexp: "^group = apache"
     replace: 'group = www-data'
     backup: yes
+
+- name: Config php-fpm.d "listen.owner" option 4 CentOS 8+\RHEL
+  when:
+    - ansible_os_family == 'RedHat'
+  become: yes
+  replace:
+    path: /etc/php-fpm.d/www.conf
+    regexp: "^;listen.owner = nobody"
+    replace: 'listen.owner = www-data'
+    backup: yes
+
+- name: Config php-fpm.d "listen.group" option 4 CentOS 8+\RHEL
+  when:
+    - ansible_os_family == 'RedHat'
+  become: yes
+  replace:
+    path: /etc/php-fpm.d/www.conf
+    regexp: "^;listen.group = nobody"
+    replace: 'listen.group = www-data'
+    backup: yes
+
+- name: Config php-fpm.d "listen.mode" option 4 CentOS 8+\RHEL
+  when:
+    - ansible_os_family == 'RedHat'
+  become: yes
+  replace:
+    path: /etc/php-fpm.d/www.conf
+    regexp: "^;listen.mode = 0660"
+    replace: 'listen.mode = 0660'
+    backup: yes
