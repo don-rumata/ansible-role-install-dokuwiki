@@ -1,0 +1,12 @@
+---
+# Set fact about apache daemon name
+- set_fact:
+    apache_service_name_fact: apache2
+  when:
+    - ansible_os_family == 'Debian'
+    - ansible_pkg_mgr == 'apt'
+- set_fact:
+    apache_service_name_fact: httpd
+  when:
+    - ansible_os_family == 'RedHat'
+    - ansible_pkg_mgr == 'dnf'

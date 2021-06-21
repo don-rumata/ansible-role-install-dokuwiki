@@ -4,7 +4,7 @@
     - ansible_pkg_mgr == 'dnf'
   become: yes
   file:
-    path: /etc/apache2/sites-enabled/000-default.conf
+    path: /etc/httpd/conf.d/welcome.conf
     state: absent
  
 - name: Configure Apache config 4 DokuWiki
@@ -65,7 +65,7 @@
     - ansible_pkg_mgr == 'dnf'
   become: yes
   service:
-    name: apache2
+    name: '{{ apache_service_name_fact }}'
     state: started
     enabled: yes
 

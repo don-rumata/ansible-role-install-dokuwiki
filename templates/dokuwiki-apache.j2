@@ -6,6 +6,11 @@ Alias {{ dokuwiki_www_dir }} {{ dokuwiki_fs_dir }}
         DirectoryIndex index.php
         Order allow,deny
         Allow from all
+    # https://www.dokuwiki.org/install:fedora#allowing_access
+    <IfModule mod_authz_core.c>
+            # Apache 2.4
+            Require all granted
+    </IfModule>
 </Directory>
 AliasMatch ^{{ dokuwiki_www_dir }}/sites/[^/]+$      {{ dokuwiki_fs_dir }}/
 AliasMatch ^{{ dokuwiki_www_dir }}/sites/[^/]+/(.*)$ {{ dokuwiki_fs_dir }}/$1
