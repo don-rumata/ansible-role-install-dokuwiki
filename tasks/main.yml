@@ -2,13 +2,15 @@
 - include_tasks: update-cache.yml
   when: ansible_virtualization_type == 'docker'
 
-- include_tasks: set-facts.yml
-
 - include_tasks: install-dependencies.yml
 
 - include_tasks: install-dependencies-2.yml
 
 - include_tasks: install-web-server-{{ dokuwiki_web_server_name }}.yml
+
+- include_tasks: set-facts.yml
+
+- include_tasks: create-users-and-groups.yml
 
 # https://serverfault.com/a/875292
 - include_tasks: config-web-server-{{ dokuwiki_web_server_name }}-{{ ansible_os_family | lower }}.yml

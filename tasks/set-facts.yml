@@ -1,9 +1,13 @@
 ---
-#--- Apache ---#
 - set_fact:
     apache_service_name_fact: apache2
     apache_path_to_sites_available: /etc/apache2/sites-available
     apache_path_to_sites_enabled: /etc/apache2/sites-enabled
+
+    nginx_path_to_sites_available: /etc/nginx/sites-available
+    nginx_path_to_sites_enabled: /etc/nginx/sites-enabled
+
+    php_fpm_path_to_socket: /var/run/php/php{{ php_installed_version_fact }}-fpm.sock
   when:
     - ansible_os_family == 'Debian'
     - ansible_pkg_mgr == 'apt'
@@ -12,6 +16,11 @@
     apache_service_name_fact: httpd
     apache_path_to_sites_available: /etc/httpd/conf.d
     apache_path_to_sites_enabled: /etc/httpd/conf.d
+
+    nginx_path_to_sites_available: /etc/nginx/conf.d
+    nginx_path_to_sites_enabled: /etc/nginx/conf.d
+
+    php_fpm_path_to_socket: /run/php-fpm/www.sock
   when:
     - ansible_os_family == 'RedHat'
     - ansible_pkg_mgr == 'dnf'

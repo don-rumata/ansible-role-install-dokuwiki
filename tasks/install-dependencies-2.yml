@@ -21,9 +21,9 @@
 - name: Install deps 4 DokuWiki 4 Debian based distro
   when:
     # # - ansible_distribution == 'Ubuntu'
-    # - ansible_os_family == 'Debian'
-    # - ansible_pkg_mgr == 'apt'
-    - ansible_system == 'Linux'
+    - ansible_os_family == 'Debian'
+    - ansible_pkg_mgr == 'apt'
+    # - ansible_system == 'Linux'
   become: yes
   package:
     name:
@@ -42,7 +42,7 @@
       # - php-ldap
       # # - php-phpseclib
       # # - php-random-compat
-      # - fontconfig
+      - fontconfig
       # # - fonts-droid-fallback
       # # - fonts-noto-mono
       # # - fonts-urw-base35
@@ -51,11 +51,30 @@
       # - hicolor-icon-theme
       
       # Вынести в отдельную таску.
-      # - imagemagick
+      - imagemagick
 
-      # - poppler-data
+      - poppler-data
     state: present
     # install_recommends: yes
+
+- name: Install deps 4 DokuWiki 4 Fedora\CentOS 8+\RHEL
+  when:
+    - ansible_os_family == 'RedHat'
+    - ansible_pkg_mgr == 'dnf'
+  become: yes
+  package:
+    name:
+      - php
+      - php-cli
+      - php-fpm
+      - php-gd
+      - php-xml
+      - php-zip
+      - php-json
+
+# TODO. May be.
+# sudo systemctl enable php-fpm.service
+
 
 - name: Get installed status php
   when: ansible_system == 'Linux'

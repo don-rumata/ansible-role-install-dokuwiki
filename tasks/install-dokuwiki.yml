@@ -1,25 +1,4 @@
 ---
-# Лол, в Fedora надо создавать www-data руками. Очень дружелюбная ОС.
-- name: Create www-data group
-  when: ansible_system == 'Linux'
-  become: yes
-  group:
-    name: www-data
-    system: yes
-    state: present
-
-- name: Create www-data user
-  when: ansible_system == 'Linux'
-  become: yes
-  user:
-    name: www-data
-    group: www-data
-    home: /var/www
-    create_home: yes
-    shell: /usr/sbin/nologin
-    state: present
-    system: yes
-
 # https://superuser.com/a/899688
 # https://unix.stackexchange.com/a/365990
 - name: Create directory structure
