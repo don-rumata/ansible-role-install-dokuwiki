@@ -20,6 +20,7 @@
     replace: 'group = www-data'
     backup: yes
 
+# https://serveradmin.ru/ustanovka-i-nastroyka-nginx-php-fpm-php7-1-na-centos-7/
 - name: Config php-fpm.d "listen.owner" option 4 CentOS 8+\RHEL
   when:
     - ansible_os_family == 'RedHat'
