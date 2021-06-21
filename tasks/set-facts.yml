@@ -1,12 +1,17 @@
 ---
-# Set fact about apache daemon name
+#--- Apache ---#
 - set_fact:
     apache_service_name_fact: apache2
+    apache_path_to_sites_available: /etc/apache2/sites-available
+    apache_path_to_sites_enabled: /etc/apache2/sites-enabled
   when:
     - ansible_os_family == 'Debian'
     - ansible_pkg_mgr == 'apt'
+
 - set_fact:
     apache_service_name_fact: httpd
+    apache_path_to_sites_available: /etc/httpd/conf.d
+    apache_path_to_sites_enabled: /etc/httpd/conf.d
   when:
     - ansible_os_family == 'RedHat'
     - ansible_pkg_mgr == 'dnf'
