@@ -26,16 +26,20 @@
     - dokuwiki_web_server_name == 'nginx'
   become: yes
   user:
-    name: nginx
+    name: "{{ item }}"
     groups: www-data
     append: yes
+  with_items:
+    - apache
+    - nginx
+    - root
 
-# php-fpm работает от него, так что веб-сервер указывать смысла нет.
-- name: Add user "apache" 2 "www-data" group
-  when:
-    - ansible_os_family == 'RedHat'
-  become: yes
-  user:
-    name: apache
-    groups: www-data
-    append: yes
+# # php-fpm работает от него, так что веб-сервер указывать смысла нет.
+# - name: Add user "apache" 2 "www-data" group
+#   when:
+#     - ansible_os_family == 'RedHat'
+#   become: yes
+#   user:
+#     name: apache
+#     groups: www-data
+#     append: yes
