@@ -1,0 +1,21 @@
+---
+# https://www.vultr.com/docs/how-to-install-dokuwiki-on-fedora-28#Step_3___Install_DokuWiki
+- name: Config php-fpm.d "user" option 4 CentOS 8+\RHEL
+  when:
+    - ansible_os_family == 'RedHat'
+  become: yes
+  replace:
+    path: /etc/php-fpm.d/www.conf
+    regexp: "^user = apache"
+    replace: 'user = www-data'
+    backup: yes
+
+- name: Config php-fpm.d "group" option 4 CentOS 8+\RHEL
+  when:
+    - ansible_os_family == 'RedHat'
+  become: yes
+  replace:
+    path: /etc/php-fpm.d/www.conf
+    regexp: "^group = apache"
+    replace: 'group = www-data'
+    backup: yes

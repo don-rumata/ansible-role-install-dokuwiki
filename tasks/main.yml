@@ -12,6 +12,8 @@
 
 - include_tasks: create-users-and-groups.yml
 
+- include_tasks: config-php-fpm.yml
+
 # https://serverfault.com/a/875292
 - include_tasks: config-web-server-{{ dokuwiki_web_server_name }}-{{ ansible_os_family | lower }}.yml
 
