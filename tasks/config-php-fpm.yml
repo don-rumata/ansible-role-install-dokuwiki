@@ -50,3 +50,4 @@
     regexp: "^;listen.mode = 0660"
     replace: 'listen.mode = 0660'
     backup: yes
+  register: php_fpm_dokuwiki_state

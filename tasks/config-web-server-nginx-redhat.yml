@@ -20,6 +20,17 @@
   # https://stackoverflow.com/a/57572036
   register: nginx_config_dokuwiki_state
 
+- name: Config user in nginx.conf 4 CentOS 8+\RHEL
+  when:
+    - ansible_os_family == 'RedHat'
+  become: yes
+  replace:
+    path: /etc/nginx/nginx.conf
+    regexp: "^user nginx"
+    replace: 'user www-data'
+    backup: yes
+  # register: nginx_config_dokuwiki_state
+
 # # https://stackoverflow.com/a/26098212
 # - name: Enable DokuWiki site
 #   when:
