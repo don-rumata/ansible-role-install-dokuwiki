@@ -51,3 +51,16 @@
     replace: 'listen.mode = 0660'
     backup: yes
   register: php_fpm_dokuwiki_state
+
+- name: Config php-fpm.d "listen.mode" option 4 CentOS 8+\RHEL
+  when:
+    - ansible_os_family == 'RedHat'
+  become: yes
+  file:
+    path: '{{ php_fpm_path_to_socket }}'
+    owner: www-data
+    group: www-data
+    # mode: '0660'
+
+# Частично помогло.
+# chown www-data:www-data /run/php-fpm/www.sock
