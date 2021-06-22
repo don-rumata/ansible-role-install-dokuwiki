@@ -1,0 +1,17 @@
+# https://www.dokuwiki.org/install:lighttpd
+alias.url += ("{{ dokuwiki_www_dir }}" => "{{ dokuwiki_fs_dir }}")
+
+$HTTP["url"] =~ "^{{ dokuwiki_www_dir }}" {
+  server.follow-symlink = "enable"
+}
+
+$HTTP["url"] =~ "/(\.|_)ht" {
+  url.access-deny = ( "" )
+}
+$HTTP["url"] =~ "^/dokuwiki/(bin|data|inc|conf)" {
+  url.access-deny = ( "" )
+}
+
+#
+# File from template https://github.com/don-rumata/ansible-role-install-dokuwiki
+#

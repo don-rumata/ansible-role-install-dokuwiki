@@ -1,33 +1,18 @@
 ---
 - name: Install Lighttpd
   when:
-    - ansible_os_family == 'Debian'
-    - ansible_pkg_mgr == 'apt'
+    - ansible_system == 'Linux'
   become: yes
-  apt:
+  package:
     name:
       - lighttpd
     state: present
-    install_recommends: yes
-
-- name: Install Lighttpd
-  when:
-    - ansible_os_family == 'Debian'
-    - ansible_pkg_mgr == 'apt'
-    - aptly_www_webdav_access == true
-  become: yes
-  apt:
-    name:
-      - lighttpd-mod-webdav
-    state: present
-    install_recommends: yes
 
 #--- Classic share ---#
 
 - name: Allow access deb repo over http
   when:
-    - ansible_os_family == 'Debian'
-    - ansible_pkg_mgr == 'apt'
+    - ansible_system == 'Linux'
   become: yes
   template:
     src: 80-aptly-share.conf.lighttpd.j2
@@ -35,55 +20,9 @@
     mode: '644'
     backup: yes
 
-- name: Enable share aptly
-  when:
-    - ansible_os_family == 'Debian'
-    - ansible_pkg_mgr == 'apt'
-  become: yes
-  command: lighttpd-enable-mod aptly-share
-  args:
-    chdir: /etc/lighttpd/conf-enabled
-    creates: 80-aptly-share.conf
-
-- name: Enable dir listing
-  when:
-    - ansible_os_family == 'Debian'
-    - ansible_pkg_mgr == 'apt'
-  become: yes
-  command: lighttpd-enable-mod dir-listing
-  args:
-    chdir: /etc/lighttpd/conf-enabled
-    creates: 10-dir-listing.conf
-
-#--- Webdav share ---#
-
-- name: Allow access deb repo over wedav
-  when:
-    - ansible_os_family == 'Debian'
-    - ansible_pkg_mgr == 'apt'
-    - aptly_www_webdav_access == true
-  become: yes
-  template:
-    src: 80-aptly-share-webdav.conf.lighttpd.j2
-    dest: /etc/lighttpd/conf-available/80-aptly-share-webdav.conf
-    mode: '644'
-    backup: yes
-
-- name: Enable webdav
-  when:
-    - ansible_os_family == 'Debian'
-    - ansible_pkg_mgr == 'apt'
-    - aptly_www_webdav_access == true
-  become: yes
-  command: lighttpd-enable-mod aptly-share-webdav
-  args:
-    chdir: /etc/lighttpd/conf-enabled
-    creates: 80-aptly-share-webdav.conf
-
 - name: Config port
   when:
-    - ansible_os_family == 'Debian'
-    - ansible_pkg_mgr == 'apt'
+    - ansible_system == 'Linux'
   become: yes
   replace:
     path: /etc/lighttpd/lighttpd.conf
@@ -97,8 +36,7 @@
 
 - name: Enable and start lighttpd service
   when:
-    - ansible_os_family == 'Debian'
-    - ansible_pkg_mgr == 'apt'
+    - ansible_system == 'Linux'
   become: yes
   service:
     name: lighttpd

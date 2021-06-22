@@ -1,0 +1,42 @@
+---
+- name: Configure Lighttpd config 4 DokuWiki
+  when:
+    - ansible_system == 'Linux'
+  become: yes
+  template:
+    src: dokuwiki-lighttpd.j2
+    dest: /etc/lighttpd/conf-available/80-dokuwiki.conf
+    backup: yes
+
+# https://stackoverflow.com/a/26098212
+- name: Enable DokuWiki site
+  when:
+    - ansible_pkg_mgr == 'apt'
+  become: yes
+  file:
+    src: /etc/lighttpd/conf-available/080-{{ dokuwiki_web_server_config_name }}.conf
+    dest: /etc/lighttpd/conf-enabled/080-{{ dokuwiki_web_server_config_name }}.conf
+    state: link
+
+- name: Config port
+  when:
+    - ansible_system == 'Linux'
+  become: yes
+  replace:
+    path: /etc/lighttpd/lighttpd.conf
+    regexp: "^server.port.*"
+    replace: 'server.port                 = {{ dokuwiki_www_port }}'
+    backup: yes
+  tags:
+    - www-port
+
+#--- Service run ---#
+
+- name: Enable and start lighttpd service
+  when:
+    - ansible_system == 'Linux'
+  become: yes
+  service:
+    name: lighttpd
+    state: started
+    enabled: yes
