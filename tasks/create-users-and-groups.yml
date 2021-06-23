@@ -1,29 +1,31 @@
 ---
 # Лол, в Fedora надо создавать www-data руками. Очень дружелюбная ОС.
-- name: Create www-data group
+- name: Create groups 4 web
   when: ansible_system == 'Linux'
   become: yes
   group:
-    name: www-data
+    name: "{{ item }}"
     system: yes
     state: present
+  with_items:
+    - '{{ dokuwiki_group_web_server }}'
+    - '{{ dokuwiki_group_php_fpm }}'
 
-- name: Create www-data user
+- name: Create web user
   when: ansible_system == 'Linux'
   become: yes
   user:
-    name: www-data
-    group: www-data
-    home: /var/www
+    name: '{{ dokuwiki_user_web_server }}'
+    group: '{{ dokuwiki_group_web_server }}'
+    home: '{{ dokuwiki_home_web_server }}'
     create_home: yes
     shell: /usr/sbin/nologin
     state: present
     system: yes
 
-- name: Add user "nginx" 2 "www-data" group
+- name: Add users 2 web group
   when:
     - ansible_os_family == 'RedHat'
-    - dokuwiki_web_server_name == 'nginx'
   become: yes
   user:
     name: "{{ item }}"
@@ -32,14 +34,7 @@
   with_items:
     - apache
     - nginx
-    - root
-
-# # php-fpm работает от него, так что веб-сервер указывать смысла нет.
-# - name: Add user "apache" 2 "www-data" group
-#   when:
-#     - ansible_os_family == 'RedHat'
-#   become: yes
-#   user:
-#     name: apache
-#     groups: www-data
-#     append: yes
+    - lighttpd
+    # - root
+    - '{{ dokuwiki_user_web_server }}'
+    - '{{ dokuwiki_user_php_fpm }}'

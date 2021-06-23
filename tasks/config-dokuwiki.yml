@@ -77,13 +77,3 @@
   service:
     name: nginx
     state: restarted
-
-- name: php-fpm restart
-  when:
-    - ansible_system == 'Linux'
-    # - php_fpm_dokuwiki_state.changed == true
-    - php_fpm_dokuwiki_state.changed
-  become: yes
-  service:
-    name: php-fpm
-    state: restarted

@@ -9,8 +9,19 @@ dokuwiki_url_archive: https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable
 
 #--- Local FS settings ---#
 
-dokuwiki_fs_dir: /var/www/dokuwiki
+dokuwiki_fs_dir: '{{ dokuwiki_home_web_server }}/dokuwiki'
 dokuwiki_chmod: u+rw,g+rw,o-rwx
+
+# ps aux | grep lighttpd
+# www-data   25177  0.0  0.9   7908  4748 ?        Ss   12:07   0:00 /usr/sbin/lighttpd -D -f /etc/lighttpd/lighttpd.conf
+dokuwiki_user_web_server: www-data
+dokuwiki_group_web_server: www-data
+dokuwiki_home_web_server: /var/www
+
+# ps aux | grep php-fpm
+# www-data   24009  0.0  1.3 209628  6696 ?        S    12:06   0:00 php-fpm: pool www
+dokuwiki_user_php_fpm: www-data
+dokuwiki_group_php_fpm: www-data
 
 #--- Webserver settings ---#
 
@@ -24,7 +35,7 @@ dokuwiki_www_port: 80
 # This: /etc/nginx/sites-enabled/80-{{ dokuwiki_web_server_config_name }}.conf
 dokuwiki_web_server_config_name: dokuwiki
 
-#--- Admin settings  ---#
+#--- Site admin settings  ---#
 
 dokuwiki_admin_login: sysadmin
 dokuwiki_admin_password: qazwsxedc

@@ -1,4 +1,14 @@
 ---
+- name: Ensure php-fpm is running
+  when:
+    - ansible_os_family == 'RedHat'
+  become: yes
+  service:
+    name: php-fpm
+    state: started
+
+# TODO. Когда доведу до рабочего состояния - рефакторнуть 's/replace/ini_file/'. https://docs.ansible.com/ansible/2.9/modules/ini_file_module.html
+
 # https://www.vultr.com/docs/how-to-install-dokuwiki-on-fedora-28#Step_3___Install_DokuWiki
 - name: Config php-fpm.d "user" option 4 CentOS 8+\RHEL
   when:
@@ -52,15 +62,22 @@
     backup: yes
   register: php_fpm_dokuwiki_state
 
-# - name: Chmod php-fpm socket 4 CentOS 8+\RHEL
-#   when:
-#     - ansible_os_family == 'RedHat'
-#   become: yes
-#   file:
-#     path: '{{ php_fpm_path_to_socket }}'
-#     owner: www-data
-#     group: www-data
-#     # mode: '0660'
+- name: php-fpm restart
+  when:
+    - ansible_os_family == 'RedHat'
+    # - php_fpm_dokuwiki_state.changed == true
+    - php_fpm_dokuwiki_state.changed
+  become: yes
+  service:
+    name: php-fpm
+    state: restarted
 
-# Частично помогло.
-# chown www-data:www-data /run/php-fpm/www.sock
+- name: Chmod php-fpm socket 4 CentOS 8+\RHEL
+  when:
+    - ansible_os_family == 'RedHat'
+  become: yes
+  file:
+    path: '{{ php_fpm_path_to_socket }}'
+    owner: www-data
+    group: www-data
+    # mode: '0660'

@@ -8,6 +8,15 @@
       - lighttpd
     state: present
 
+- name: Install Lighttpd FastCGI support
+  when:
+    - ansible_os_family == 'RedHat'
+  become: yes
+  package:
+    name:
+      - lighttpd-fastcgi
+    state: present
+
 - name: Install JavaScript support 4 Lighttpd 4 Debian\Ubuntu
   when:
     - ansible_os_family == 'Debian'

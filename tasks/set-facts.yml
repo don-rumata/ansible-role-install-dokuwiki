@@ -4,6 +4,9 @@
     apache_path_to_sites_available: /etc/apache2/sites-available
     apache_path_to_sites_enabled: /etc/apache2/sites-enabled
 
+    lighttpd_path_to_sites_available: /etc/lighttpd/sites-available
+    lighttpd_path_to_sites_enabled: /etc/lighttpd/sites-enabled
+
     nginx_path_to_sites_available: /etc/nginx/sites-available
     nginx_path_to_sites_enabled: /etc/nginx/sites-enabled
 
@@ -16,6 +19,9 @@
     apache_service_name_fact: httpd
     apache_path_to_sites_available: /etc/httpd/conf.d
     apache_path_to_sites_enabled: /etc/httpd/conf.d
+
+    lighttpd_path_to_sites_available: /etc/lighttpd/conf.d
+    lighttpd_path_to_sites_enabled: /etc/lighttpd/conf.d
 
     nginx_path_to_sites_available: /etc/nginx/conf.d
     nginx_path_to_sites_enabled: /etc/nginx/conf.d
