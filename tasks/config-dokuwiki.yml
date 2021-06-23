@@ -56,6 +56,17 @@
     name: '{{ apache_service_name_fact }}'
     state: restarted
 
+- name: Lighttpd restart
+  when:
+    - ansible_system == 'Linux'
+    - dokuwiki_web_server_name == 'lighttpd'
+    # - lighttpd_config_dokuwiki_state.changed == true
+    - lighttpd_config_dokuwiki_state.changed
+  become: yes
+  service:
+    name: lighttpd
+    state: restarted
+
 - name: NGINX restart
   when:
     - ansible_system == 'Linux'
