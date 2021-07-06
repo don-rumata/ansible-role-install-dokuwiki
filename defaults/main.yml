@@ -35,6 +35,9 @@ dokuwiki_www_port: 80
 # This: /etc/nginx/sites-enabled/80-{{ dokuwiki_web_server_config_name }}.conf
 dokuwiki_web_server_config_name: dokuwiki
 
+# TODO. This: "server { server_name wiki.ulyaoth.net; }"
+# dokuwiki_server_name: dokuwiki.example.com
+
 #--- Site admin settings  ---#
 
 dokuwiki_admin_login: sysadmin

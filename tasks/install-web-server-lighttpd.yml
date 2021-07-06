@@ -1,4 +1,16 @@
 ---
+# https://www.osradar.com/how-to-install-lighttpd-almalinux-centos/
+- name: Install Lighttpd
+  when:
+    - ansible_os_family == 'RedHat'
+    # - ansible_distribution == "CentOS"
+    - ansible_distribution_major_version == '8'
+  become: yes
+  package:
+    name:
+      - epel-release
+    state: present
+
 - name: Install Lighttpd
   when:
     - ansible_system == 'Linux'

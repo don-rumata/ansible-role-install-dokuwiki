@@ -3,19 +3,23 @@
 - name: Check security config
   when: ansible_system == 'Linux'
   uri:
-    url: http://{{ inventory_hostname }}{{dokuwiki_www_dir }}/data/pages/wiki/dokuwiki.txt
+    # url: http://{{ inventory_hostname }}{{dokuwiki_www_dir }}/data/pages/wiki/dokuwiki.txt
+    url: http://localhost/{{dokuwiki_www_dir }}/data/pages/wiki/dokuwiki.txt
     method: GET
     return_content: no
+    use_proxy: no
     status_code:
       - 403
+  delegate_to: "{{ inventory_hostname }}"
 
 - name: Check main page access
   when: ansible_system == 'Linux'
   uri:
-    url: http://{{ inventory_hostname }}{{dokuwiki_www_dir }}
+    url: http://localhost/{{dokuwiki_www_dir }}
     method: GET
     return_content: yes
     status_code:
       - 200
   register: dokuwiki_main_page_access
   failed_when: not ( dokuwiki_title in dokuwiki_main_page_access.content )
+  delegate_to: "{{ inventory_hostname }}"
