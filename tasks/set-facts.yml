@@ -27,6 +27,7 @@
     nginx_path_to_sites_enabled: /etc/nginx/conf.d
 
     php_fpm_path_to_socket: /run/php-fpm/www.sock
+    php_fpm_path_to_config_fact: /etc/php-fpm.d/www.conf
   when:
     - ansible_os_family == 'RedHat'
     - ansible_pkg_mgr == 'dnf'
@@ -43,6 +44,13 @@
     nginx_path_to_sites_enabled: /etc/nginx/conf.d
 
     php_fpm_path_to_socket: /run/php-fpm/www.sock
+    php_fpm_path_to_main_config_fact: /etc/php{{ dokuwiki_opensuse_php_major_version }}/fpm/php-fpm.conf
+    php_fpm_path_to_config_fact: /etc/php{{ dokuwiki_opensuse_php_major_version }}/fpm/php-fpm.d/www.conf
   when:
     - ansible_os_family == 'Suse'
     - ansible_pkg_mgr == 'zypper'
+
+# 4 debug
+# - debug:
+#     msg: "{{ php_fpm_path_to_config_fact }}"
+# - pause:

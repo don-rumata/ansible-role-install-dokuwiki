@@ -71,6 +71,23 @@
       - php-xml
       - php-zip
       - php-json
+      - ImageMagick
+
+- name: Install deps 4 DokuWiki 4 openSUSE
+  when:
+    - ansible_os_family == 'Suse'
+    - ansible_pkg_mgr == 'zypper'
+  become: yes
+  package:
+    name:
+      - php{{ dokuwiki_opensuse_php_major_version }}
+      - php{{ dokuwiki_opensuse_php_major_version }}-fpm
+      - php{{ dokuwiki_opensuse_php_major_version }}-gd
+      - php{{ dokuwiki_opensuse_php_major_version }}-xmlreader
+      - php{{ dokuwiki_opensuse_php_major_version }}-zip
+      - php{{ dokuwiki_opensuse_php_major_version }}-json
+      - php{{ dokuwiki_opensuse_php_major_version }}-mbstring
+      - ImageMagick
 
 # TODO. May be.
 # sudo systemctl enable php-fpm.service
@@ -92,5 +109,14 @@
       when:
         - ansible_os_family == 'RedHat'
         - ansible_pkg_mgr == 'dnf'
+    - set_fact:
+        php_installed_version_fact: "{{ ansible_facts.packages['php7'][0].version.split('.', 2)[:-1] | join('.') }}"
+      when:
+        - ansible_os_family == 'Suse'
+        - ansible_pkg_mgr == 'zypper'
 
+# # 4 debug
+# - copy:
+#     dest: /tmp/package_facts.json
+#     content: "{{ ansible_facts.packages }}"
 # - pause:

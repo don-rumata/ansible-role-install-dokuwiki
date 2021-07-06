@@ -46,3 +46,8 @@ dokuwiki_admin_email: mail@example.com
 dokuwiki_admin_real_name: Malcolm Reynolds
 dokuwiki_title: My shiny metal dokuwiki
 dokuwiki_interface_lang: en
+
+#--- Distro spicific vars ---#
+
+# zypper info php7
+dokuwiki_opensuse_php_major_version: 7

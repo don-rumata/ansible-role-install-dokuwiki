@@ -1,78 +1,175 @@
 ---
 - name: Ensure php-fpm is running
   when:
-    - ansible_os_family == 'RedHat'
+    - (ansible_os_family == 'RedHat')
+      # or
+      # (ansible_os_family == 'Suse')
   become: yes
   service:
     name: php-fpm
     state: started
 
-# TODO. Когда доведу до рабочего состояния - рефакторнуть 's/replace/ini_file/'. https://docs.ansible.com/ansible/2.9/modules/ini_file_module.html
+# https://stackoverflow.com/a/46699211 NOT WORK ;-(
+- name: Get info about {{ php_fpm_path_to_main_config_fact }} exist
+  when:
+    - ansible_os_family == 'Suse'
+  stat:
+    path: "{{ php_fpm_path_to_main_config_fact }}"
+  register: php_fpm_path_to_main_config_state
+
+- name: Get info about {{ php_fpm_path_to_config_fact }} exist
+  when:
+    - ansible_os_family == 'Suse'
+  stat:
+    path: "{{ php_fpm_path_to_config_fact }}"
+  register: php_fpm_path_to_config_state
+
+- name: Copy main php-fpm config from default 4 openSUSE
+  when:
+    - ansible_os_family == 'Suse'
+    # - php_fpm_path_to_main_config_state.stat.exists == true
+    - not (php_fpm_path_to_main_config_state.stat.exists)
+  become: yes
+  copy:
+    src: /etc/php{{ dokuwiki_opensuse_php_major_version }}/fpm/php-fpm.conf.default
+    dest: /etc/php{{ dokuwiki_opensuse_php_major_version }}/fpm/php-fpm.conf
+    remote_src: yes
+
+- name: Copy www php-fpm config from default 4 openSUSE
+  when:
+    - ansible_os_family == 'Suse'
+    # - php_fpm_path_to_config_state.stat.exists == true
+    - not (php_fpm_path_to_config_state.stat.exists)
+  become: yes
+  copy:
+    src: '{{ php_fpm_path_to_config_fact }}.default'
+    dest: '{{ php_fpm_path_to_config_fact }}'
+    remote_src: yes
 
 # https://www.vultr.com/docs/how-to-install-dokuwiki-on-fedora-28#Step_3___Install_DokuWiki
-- name: Config php-fpm.d "user" option 4 CentOS 8+\RHEL
+- name: Config php-fpm.d "user" option 4 CentOS 8+\RHEL and openSUSE
   when:
-    - ansible_os_family == 'RedHat'
+    - (ansible_os_family == 'RedHat')
+      or
+      (ansible_os_family == 'Suse')
   become: yes
-  replace:
-    path: /etc/php-fpm.d/www.conf
-    regexp: "^user = apache"
-    replace: 'user = www-data'
+  # replace:
+  #   path: '{{ php_fpm_path_to_config_fact }}'
+  #   regexp: "^user = apache"
+  #   replace: 'user = www-data'
+  #   backup: yes
+  ini_file:
+    path: '{{ php_fpm_path_to_config_fact }}'
+    section: www
+    option: user
+    value: "{{ dokuwiki_user_php_fpm }}"
+    # no_extra_spaces: yes
     backup: yes
+  register: php_fpm_config_user_dokuwiki_state
 
-- name: Config php-fpm.d "group" option 4 CentOS 8+\RHEL
+- name: Config php-fpm.d "group" option 4 CentOS 8+\RHEL and openSUSE
   when:
-    - ansible_os_family == 'RedHat'
+    - (ansible_os_family == 'RedHat')
+      or
+      (ansible_os_family == 'Suse')
   become: yes
-  replace:
-    path: /etc/php-fpm.d/www.conf
-    regexp: "^group = apache"
-    replace: 'group = www-data'
+  # replace:
+  #   path: '{{ php_fpm_path_to_config_fact }}'
+  #   regexp: "^group = apache"
+  #   replace: 'group = www-data'
+  #   backup: yes
+  ini_file:
+    path: '{{ php_fpm_path_to_config_fact }}'
+    section: www
+    option: group
+    value: "{{ dokuwiki_group_php_fpm }}"
+    # no_extra_spaces: yes
     backup: yes
+  register: php_fpm_config_group_dokuwiki_state
 
 # https://serveradmin.ru/ustanovka-i-nastroyka-nginx-php-fpm-php7-1-na-centos-7/
-- name: Config php-fpm.d "listen.owner" option 4 CentOS 8+\RHEL
+- name: Config php-fpm.d "listen.owner" option 4 CentOS 8+\RHEL and openSUSE
   when:
-    - ansible_os_family == 'RedHat'
+    - (ansible_os_family == 'RedHat')
+      or
+      (ansible_os_family == 'Suse')
   become: yes
-  replace:
-    path: /etc/php-fpm.d/www.conf
-    regexp: "^;listen.owner = nobody"
-    replace: 'listen.owner = www-data'
+  # replace:
+  #   path: '{{ php_fpm_path_to_config_fact }}'
+  #   regexp: "^;listen.owner = nobody"
+  #   replace: 'listen.owner = www-data'
+  #   backup: yes
+  ini_file:
+    path: '{{ php_fpm_path_to_config_fact }}'
+    section: www
+    option: listen.owner
+    value: "{{ dokuwiki_user_php_fpm }}"
+    # no_extra_spaces: yes
     backup: yes
+  register: php_fpm_config_listen_owner_dokuwiki_state
 
-- name: Config php-fpm.d "listen.group" option 4 CentOS 8+\RHEL
+- name: Config php-fpm.d "listen.group" option 4 CentOS 8+\RHEL and openSUSE
   when:
-    - ansible_os_family == 'RedHat'
+    - (ansible_os_family == 'RedHat')
+      or
+      (ansible_os_family == 'Suse')
   become: yes
-  replace:
-    path: /etc/php-fpm.d/www.conf
-    regexp: "^;listen.group = nobody"
-    replace: 'listen.group = www-data'
+  # replace:
+  #   path: '{{ php_fpm_path_to_config_fact }}'
+  #   regexp: "^;listen.group = nobody"
+  #   replace: 'listen.group = www-data'
+  #   backup: yes
+  ini_file:
+    path: '{{ php_fpm_path_to_config_fact }}'
+    section: www
+    option: listen.group
+    value: "{{ dokuwiki_group_php_fpm }}"
+    # no_extra_spaces: yes
     backup: yes
+  register: php_fpm_config_listen_group_dokuwiki_state
 
-- name: Config php-fpm.d "listen.mode" option 4 CentOS 8+\RHEL
+- name: Config php-fpm.d "listen.mode" option 4 CentOS 8+\RHEL and openSUSE
   when:
-    - ansible_os_family == 'RedHat'
+    - (ansible_os_family == 'RedHat')
+      or
+      (ansible_os_family == 'Suse')
   become: yes
-  replace:
-    path: /etc/php-fpm.d/www.conf
-    regexp: "^;listen.mode = 0660"
-    replace: 'listen.mode = 0660'
+  # replace:
+  #   path: '{{ php_fpm_path_to_config_fact }}'
+  #   regexp: "^;listen.mode = 0660"
+  #   replace: 'listen.mode = 0660'
+  #   backup: yes
+  ini_file:
+    path: '{{ php_fpm_path_to_config_fact }}'
+    section: www
+    option: listen.mode
+    value: '0660'
+    # no_extra_spaces: yes
     backup: yes
-  register: php_fpm_dokuwiki_state
+  register: php_fpm_config_listen_mode_dokuwiki_state
 
 - name: php-fpm restart
   when:
-    - ansible_os_family == 'RedHat'
+    - (ansible_os_family == 'RedHat')
+      or
+      (ansible_os_family == 'Suse')
     # - php_fpm_dokuwiki_state.changed == true
-    - php_fpm_dokuwiki_state.changed
+    - php_fpm_config_user_dokuwiki_state.changed
+      or
+      php_fpm_config_group_dokuwiki_state.changed
+      or
+      php_fpm_config_listen_owner_dokuwiki_state.changed
+      or
+      php_fpm_config_listen_group_dokuwiki_state.changed
+      or
+      php_fpm_config_listen_mode_dokuwiki_state.changed
   become: yes
   service:
     name: php-fpm
     state: restarted
 
-- name: Chmod php-fpm socket 4 CentOS 8+\RHEL
+# In openSUSE - listen = 127.0.0.1:9000.
+- name: Chmod php-fpm socket 4 CentOS 8+\RHEL and
   when:
     - ansible_os_family == 'RedHat'
   become: yes

@@ -15,7 +15,7 @@
 - name: Check main page access
   when: ansible_system == 'Linux'
   uri:
-    url: http://localhost/{{dokuwiki_www_dir }}
+    url: http://localhost/{{ dokuwiki_www_dir }}
     method: GET
     return_content: yes
     status_code:
