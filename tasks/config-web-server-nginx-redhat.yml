@@ -32,7 +32,7 @@
   # register: nginx_config_dokuwiki_state
 
 # "blockinfile" not work for me. If you know how it work - send patch or open issue, please.
-- name: Delete default site in nginx.conf 4 CentOS 8+\RHEL (FUCKING DIRTY HACK)
+- name: Delete default site in nginx.conf 4 Fedora\CentOS 8+\RHEL (FUCKING DIRTY HACK)
   when:
     - ansible_os_family == 'RedHat'
   become: yes
@@ -42,6 +42,7 @@
     state: absent
     backup: yes
   with_items:
+    # CentOS 8
     - '    server {'
     - '        listen       80 default_server;'
     - '        listen       [::]:80 default_server;'
@@ -58,6 +59,11 @@
     - '            location = /50x.html {'
     - '        }'
     - '    }'
+    # Fedora 33
+    - '        listen       80;'
+    - '        listen       [::]:80;'
+    - '        location = /404.html {'
+    - '        location = /50x.html {'
   register: nginx_remove_default_config_site_state
 
 # # https://stackoverflow.com/a/26098212
