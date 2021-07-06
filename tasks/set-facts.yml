@@ -30,3 +30,19 @@
   when:
     - ansible_os_family == 'RedHat'
     - ansible_pkg_mgr == 'dnf'
+
+- set_fact:
+    apache_service_name_fact: httpd
+    apache_path_to_sites_available: /etc/httpd/conf.d
+    apache_path_to_sites_enabled: /etc/httpd/conf.d
+
+    lighttpd_path_to_sites_available: /etc/lighttpd/conf.d
+    lighttpd_path_to_sites_enabled: /etc/lighttpd/conf.d
+
+    nginx_path_to_sites_available: /etc/nginx/conf.d
+    nginx_path_to_sites_enabled: /etc/nginx/conf.d
+
+    php_fpm_path_to_socket: /run/php-fpm/www.sock
+  when:
+    - ansible_os_family == 'Suse'
+    - ansible_pkg_mgr == 'zypper'
