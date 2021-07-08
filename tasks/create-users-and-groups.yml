@@ -9,7 +9,7 @@
     state: present
   with_items:
     - '{{ dokuwiki_group_web_server }}'
-    - '{{ dokuwiki_group_php_fpm }}'
+    - '{{ dokuwiki_php_fpm_group }}'
 
 - name: Create web user
   when: ansible_system == 'Linux'
@@ -37,4 +37,4 @@
     - lighttpd
     # - root
     - '{{ dokuwiki_user_web_server }}'
-    - '{{ dokuwiki_user_php_fpm }}'
+    - '{{ dokuwiki_php_fpm_user }}'

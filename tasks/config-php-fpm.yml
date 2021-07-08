@@ -1,14 +1,4 @@
 ---
-- name: Ensure php-fpm is running
-  when:
-    - (ansible_os_family == 'RedHat')
-      # or
-      # (ansible_os_family == 'Suse')
-  become: yes
-  service:
-    name: php-fpm
-    state: started
-
 # https://stackoverflow.com/a/46699211 NOT WORK ;-(
 - name: Get info about {{ php_fpm_path_to_main_config_fact }} exist
   when:
@@ -62,8 +52,7 @@
     path: '{{ php_fpm_path_to_config_fact }}'
     section: www
     option: user
-    value: "{{ dokuwiki_user_php_fpm }}"
-    # no_extra_spaces: yes
+    value: "{{ dokuwiki_php_fpm_user }}"
     backup: yes
   register: php_fpm_config_user_dokuwiki_state
 
@@ -82,8 +71,22 @@
     path: '{{ php_fpm_path_to_config_fact }}'
     section: www
     option: group
-    value: "{{ dokuwiki_group_php_fpm }}"
-    # no_extra_spaces: yes
+    value: "{{ dokuwiki_php_fpm_group }}"
+    backup: yes
+  register: php_fpm_config_group_dokuwiki_state
+
+# TODO. Добавить на выбор server:port.
+- name: Config php-fpm.d "listen" option 4 CentOS 8+\RHEL and openSUSE
+  when:
+    - (ansible_os_family == 'RedHat')
+      or
+      (ansible_os_family == 'Suse')
+  become: yes
+  ini_file:
+    path: '{{ php_fpm_path_to_config_fact }}'
+    section: www
+    option: listen
+    value: "{{ php_fpm_path_to_socket }}"
     backup: yes
   register: php_fpm_config_group_dokuwiki_state
 
@@ -103,8 +106,7 @@
     path: '{{ php_fpm_path_to_config_fact }}'
     section: www
     option: listen.owner
-    value: "{{ dokuwiki_user_php_fpm }}"
-    # no_extra_spaces: yes
+    value: "{{ dokuwiki_php_fpm_user }}"
     backup: yes
   register: php_fpm_config_listen_owner_dokuwiki_state
 
@@ -123,8 +125,7 @@
     path: '{{ php_fpm_path_to_config_fact }}'
     section: www
     option: listen.group
-    value: "{{ dokuwiki_group_php_fpm }}"
-    # no_extra_spaces: yes
+    value: "{{ dokuwiki_php_fpm_group }}"
     backup: yes
   register: php_fpm_config_listen_group_dokuwiki_state
 
@@ -144,9 +145,18 @@
     section: www
     option: listen.mode
     value: '0660'
-    # no_extra_spaces: yes
     backup: yes
   register: php_fpm_config_listen_mode_dokuwiki_state
+
+- name: Ensure php-fpm is running
+  when:
+    - (ansible_os_family == 'RedHat')
+      or
+      (ansible_os_family == 'Suse')
+  become: yes
+  service:
+    name: php-fpm
+    state: started
 
 - name: php-fpm restart
   when:
@@ -168,13 +178,13 @@
     name: php-fpm
     state: restarted
 
-# In openSUSE - listen = 127.0.0.1:9000.
-- name: Chmod php-fpm socket 4 CentOS 8+\RHEL and
+- name: Chmod php-fpm socket 4 CentOS 8+\RHEL and openSUSE
   when:
     - ansible_os_family == 'RedHat'
+    - dokuwiki_php_fpm_connection_type == 'socket'
   become: yes
   file:
-    path: '{{ php_fpm_path_to_socket }}'
+    path: '{{ dokuwiki_php_fpm_connection_address }}'
     owner: www-data
     group: www-data
     # mode: '0660'

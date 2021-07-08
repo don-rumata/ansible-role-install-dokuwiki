@@ -71,7 +71,7 @@
       - php-xml
       - php-zip
       - php-json
-      - ImageMagick
+      # - ImageMagick
 
 - name: Install deps 4 DokuWiki 4 openSUSE
   when:

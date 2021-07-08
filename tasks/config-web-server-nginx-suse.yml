@@ -12,48 +12,65 @@
   # https://stackoverflow.com/a/57572036
   register: nginx_config_dokuwiki_state
 
+# "user www-data;". Like lineinfile.
 - name: Config user in nginx.conf 4 openSUSE
   when:
     - ansible_os_family == 'Suse'
   become: yes
-  replace:
+  ini_file:
     path: /etc/nginx/nginx.conf
-    regexp: "^user nginx"
-    replace: 'user www-data'
+    section: null
+    option: user {{ dokuwiki_user_web_server }};
+    allow_no_value: yes
     backup: yes
-  # register: nginx_config_dokuwiki_state
+  register: nginx_config_dokuwiki_state
 
-# # "blockinfile" not work for me. If you know how it work - send patch or open issue, please.
-# - name: Delete default site in nginx.conf 4 openSUSE (FUCKING DIRTY HACK)
-#   when:
-#     - ansible_os_family == 'Suse'
-#   become: yes
-#   lineinfile:
-#     path: /etc/nginx/nginx.conf
-#     line: "{{ item }}"
-#     state: absent
-#     backup: yes
-#   with_items:
-#     # CentOS 8
-#     - '    server {'
-#     - '        listen       80 default_server;'
-#     - '        listen       [::]:80 default_server;'
-#     - '        server_name  _;'
-#     - '        root         /usr/share/nginx/html;'
-#     - '        # Load configuration files for the default server block.'
-#     - '        include /etc/nginx/default.d/*.conf;'
-#     - '        location / {'
-#     - '        }'
-#     - '        error_page 404 /404.html;'
-#     - '            location = /40x.html {'
-#     - '        }'
-#     - '        error_page 500 502 503 504 /50x.html;'
-#     - '            location = /50x.html {'
-#     - '        }'
-#     - '    }'
-#     # Fedora 33
-#     - '        listen       80;'
-#     - '        listen       [::]:80;'
-#     - '        location = /404.html {'
-#     - '        location = /50x.html {'
-#   register: nginx_remove_default_config_site_state
+# "blockinfile" not work for me. If you know how it work - send patch or open issue, please.
+- name: Delete default site in nginx.conf 4 openSUSE (FUCKING DIRTY HACK)
+  when:
+    - ansible_os_family == 'Suse'
+  become: yes
+  lineinfile:
+    path: /etc/nginx/nginx.conf
+    line: "{{ item }}"
+    state: absent
+    backup: yes
+  with_items:
+    - "    server {"
+    - "        listen       80;"
+    - "        server_name  localhost;"
+    - "        #charset koi8-r;"
+    - "        #access_log  /var/log/nginx/host.access.log  main;"
+    - "        location / {"
+    - "            root   /srv/www/htdocs/;"
+    - "            index  index.html index.htm;"
+    - "        }"
+    - "        #error_page  404              /404.html;"
+    - "        # redirect server error pages to the static page /50x.html"
+    - "        #"
+    - "        error_page   500 502 503 504  /50x.html;"
+    - "        location = /50x.html {"
+    - "            root   /srv/www/htdocs/;"
+    - "        }"
+    - "        # proxy the PHP scripts to Apache listening on 127.0.0.1:80"
+    - "        #"
+    - '        #location ~ \.php$ {'
+    - "        #    proxy_pass   http://127.0.0.1;"
+    - "        #}"
+    - "        # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000"
+    - "        #"
+    - '        #location ~ \.php$ {'
+    - "        #    root           /srv/www/htdocs/;"
+    - "        #    fastcgi_pass   127.0.0.1:9000;"
+    - "        #    fastcgi_index  index.php;"
+    - "        #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;"
+    - "        #    include        fastcgi_params;"
+    - "        #}"
+    - "        # deny access to .htaccess files, if Apache's document root"
+    - "        # concurs with nginx's one"
+    - "        #"
+    - '        #location ~ /\.ht {'
+    - "        #    deny  all;"
+    - "        #}"
+    - "    }"
+  register: nginx_remove_default_config_site_state

@@ -17,21 +17,38 @@ server {
 
     {% if ansible_os_family == 'Debian' %}
     location ~ \.php$ {
+        include fastcgi_params;
+        fastcgi_intercept_errors on;
         # Caution: be sure the php{{ php_installed_version_fact }}-fpm.sock matches your version
         include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:{{ php_fpm_path_to_socket }};
+
+        {% if dokuwiki_php_fpm_connection_type == 'socket' %}
+        fastcgi_pass unix:{{ dokuwiki_php_fpm_connection_address }};
+        {% endif %}
+
+        {% if dokuwiki_php_fpm_connection_type == 'ip' %}
+        fastcgi_pass {{ dokuwiki_php_fpm_connection_address }};
+        {% endif %}
+
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-        include fastcgi_params;
     }
     {% endif %}
 
-    {% if ansible_os_family == 'RedHat' %}
+    {% if ansible_os_family == 'RedHat' or ansible_os_family == 'Suse' %}
     # https://stackoverflow.com/a/47929033
     location ~ \.php$ {
         #NOTE: You should have "cgi.fix_pathinfo = 0;" in php.ini
         include fastcgi_params;
         fastcgi_intercept_errors on;
-        fastcgi_pass unix:{{ php_fpm_path_to_socket }};
+
+        {% if dokuwiki_php_fpm_connection_type == 'socket' %}
+        fastcgi_pass unix:{{ dokuwiki_php_fpm_connection_address }};
+        {% endif %}
+
+        {% if dokuwiki_php_fpm_connection_type == 'ip' %}
+        fastcgi_pass {{ dokuwiki_php_fpm_connection_address }};
+        {% endif %}
+
         fastcgi_param SCRIPT_FILENAME $document_root/$fastcgi_script_name;
     }
     {% endif %}

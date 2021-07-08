@@ -1,0 +1,25 @@
+.,Apache,lighttpd,nginx
+OS,,,
+.,,,
+Ubuntu,,,
+focal,:heavy_check_mark:,:heavy_check_mark:,:heavy_check_mark:
+bionic,:heavy_check_mark:,:heavy_check_mark:,:heavy_check_mark:
+xenial,:heavy_check_mark:,:heavy_check_mark:,:heavy_check_mark:
+.,,,
+Debian,,,
+stretch,:heavy_check_mark:,:heavy_check_mark:,:heavy_check_mark:
+buster,:heavy_check_mark:,:heavy_check_mark:,:heavy_check_mark:
+stable,:heavy_check_mark:,:heavy_check_mark:,:heavy_check_mark:
+testing,:heavy_check_mark:,:heavy_check_mark:,:heavy_check_mark:
+.,,,
+EL (CentOS),,,
+8,:heavy_check_mark:,:heavy_check_mark:,:heavy_check_mark:
+.,,,
+opensuse,,,
+tumbleweed,:heavy_check_mark:,:heavy_check_mark:,:heavy_check_mark:
+leap,:heavy_check_mark:,:heavy_check_mark:,:heavy_check_mark:
+.,,,
+Fedora,,,
+33,:heavy_check_mark:,:heavy_check_mark:,:heavy_check_mark:
+34,:heavy_check_mark:,:heavy_check_mark:,:heavy_check_mark:
+.,,,

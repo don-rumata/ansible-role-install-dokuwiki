@@ -18,6 +18,7 @@
     url: http://localhost/{{ dokuwiki_www_dir }}
     method: GET
     return_content: yes
+    use_proxy: no
     status_code:
       - 200
   register: dokuwiki_main_page_access
