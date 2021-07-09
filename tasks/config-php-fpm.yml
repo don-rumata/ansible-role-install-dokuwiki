@@ -83,7 +83,7 @@
     option: listen
     value: "{{ dokuwiki_php_fpm_connection_address }}"
     backup: yes
-  register: php_fpm_config_group_dokuwiki_state
+  register: php_fpm_config_listen_dokuwiki_state
 
 # https://serveradmin.ru/ustanovka-i-nastroyka-nginx-php-fpm-php7-1-na-centos-7/
 - name: Config php-fpm.d "listen.owner" option
@@ -152,10 +152,11 @@
 - name: php-fpm restart
   when: 
     - ansible_system == 'Linux'
-    # - php_fpm_dokuwiki_state.changed == true
     - php_fpm_config_user_dokuwiki_state.changed
       or
       php_fpm_config_group_dokuwiki_state.changed
+      or
+      php_fpm_config_listen_dokuwiki_state.changed
       or
       php_fpm_config_listen_owner_dokuwiki_state.changed
       or
