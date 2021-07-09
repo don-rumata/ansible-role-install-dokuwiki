@@ -1,5 +1,10 @@
 ---
 - set_fact:
+    php_fpm_path_to_directory_with_socket_fact: "{{ dokuwiki_php_fpm_connection_address | dirname }}"
+  when:
+    - ansible_system == 'Linux'
+
+- set_fact:
     apache_service_name_fact: apache2
     apache_path_to_sites_available: /etc/apache2/sites-available
     apache_path_to_sites_enabled: /etc/apache2/sites-enabled
@@ -10,7 +15,8 @@
     nginx_path_to_sites_available: /etc/nginx/sites-available
     nginx_path_to_sites_enabled: /etc/nginx/sites-enabled
 
-    php_fpm_path_to_socket: /var/run/php/php{{ php_installed_version_fact }}-fpm.sock
+    php_fpm_path_to_config_fact: /etc/php/{{ php_installed_version_fact }}/fpm/pool.d/www.conf
+    php_fpm_service_name_fact: php{{ php_installed_version_fact }}-fpm.service
   when:
     - ansible_os_family == 'Debian'
     - ansible_pkg_mgr == 'apt'
@@ -27,6 +33,7 @@
     nginx_path_to_sites_enabled: /etc/nginx/conf.d
 
     php_fpm_path_to_config_fact: /etc/php-fpm.d/www.conf
+    php_fpm_service_name_fact: php-fpm.service
   when:
     - ansible_os_family == 'RedHat'
     - ansible_pkg_mgr == 'dnf'
@@ -44,6 +51,7 @@
 
     php_fpm_path_to_main_config_fact: /etc/php{{ dokuwiki_opensuse_php_major_version }}/fpm/php-fpm.conf
     php_fpm_path_to_config_fact: /etc/php{{ dokuwiki_opensuse_php_major_version }}/fpm/php-fpm.d/www.conf
+    php_fpm_service_name_fact: php-fpm.service
   when:
     - ansible_os_family == 'Suse'
     - ansible_pkg_mgr == 'zypper'

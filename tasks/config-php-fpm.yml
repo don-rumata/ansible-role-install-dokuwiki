@@ -1,15 +1,13 @@
 ---
 # https://stackoverflow.com/a/46699211 NOT WORK ;-(
 - name: Get info about {{ php_fpm_path_to_main_config_fact }} exist
-  when:
-    - ansible_os_family == 'Suse'
+  when: ansible_os_family == 'Suse'
   stat:
     path: "{{ php_fpm_path_to_main_config_fact }}"
   register: php_fpm_path_to_main_config_state
 
 - name: Get info about {{ php_fpm_path_to_config_fact }} exist
-  when:
-    - ansible_os_family == 'Suse'
+  when: ansible_os_family == 'Suse'
   stat:
     path: "{{ php_fpm_path_to_config_fact }}"
   register: php_fpm_path_to_config_state
@@ -17,7 +15,7 @@
 - name: Copy main php-fpm config from default 4 openSUSE
   when:
     - ansible_os_family == 'Suse'
-    # - php_fpm_path_to_main_config_state.stat.exists == true
+    # - php_fpm_path_to_main_config_state.stat.exists == false
     - not (php_fpm_path_to_main_config_state.stat.exists)
   become: yes
   copy:
@@ -28,7 +26,7 @@
 - name: Copy www php-fpm config from default 4 openSUSE
   when:
     - ansible_os_family == 'Suse'
-    # - php_fpm_path_to_config_state.stat.exists == true
+    # - php_fpm_path_to_config_state.stat.exists == false
     - not (php_fpm_path_to_config_state.stat.exists)
   become: yes
   copy:
@@ -37,11 +35,11 @@
     remote_src: yes
 
 # https://www.vultr.com/docs/how-to-install-dokuwiki-on-fedora-28#Step_3___Install_DokuWiki
-- name: Config php-fpm.d "user" option 4 CentOS 8+\RHEL and openSUSE
-  when:
-    - (ansible_os_family == 'RedHat')
-      or
-      (ansible_os_family == 'Suse')
+- name: Config php-fpm.d "user" option
+  when: ansible_system == 'Linux'
+  # https://stackoverflow.com/a/49127686
+  environment:
+    LC_CTYPE: en_US.UTF-8
   become: yes
   # replace:
   #   path: '{{ php_fpm_path_to_config_fact }}'
@@ -56,11 +54,10 @@
     backup: yes
   register: php_fpm_config_user_dokuwiki_state
 
-- name: Config php-fpm.d "group" option 4 CentOS 8+\RHEL and openSUSE
-  when:
-    - (ansible_os_family == 'RedHat')
-      or
-      (ansible_os_family == 'Suse')
+- name: Config php-fpm.d "group" option
+  when: ansible_system == 'Linux'
+  environment:
+    LC_CTYPE: en_US.UTF-8
   become: yes
   # replace:
   #   path: '{{ php_fpm_path_to_config_fact }}'
@@ -75,12 +72,10 @@
     backup: yes
   register: php_fpm_config_group_dokuwiki_state
 
-# TODO. Добавить на выбор server:port.
-- name: Config php-fpm.d "listen" option 4 CentOS 8+\RHEL and openSUSE
-  when:
-    - (ansible_os_family == 'RedHat')
-      or
-      (ansible_os_family == 'Suse')
+- name: Config php-fpm.d "listen" option
+  when: ansible_system == 'Linux'
+  environment:
+    LC_CTYPE: en_US.UTF-8
   become: yes
   ini_file:
     path: '{{ php_fpm_path_to_config_fact }}'
@@ -91,11 +86,10 @@
   register: php_fpm_config_group_dokuwiki_state
 
 # https://serveradmin.ru/ustanovka-i-nastroyka-nginx-php-fpm-php7-1-na-centos-7/
-- name: Config php-fpm.d "listen.owner" option 4 CentOS 8+\RHEL and openSUSE
-  when:
-    - (ansible_os_family == 'RedHat')
-      or
-      (ansible_os_family == 'Suse')
+- name: Config php-fpm.d "listen.owner" option
+  when: ansible_system == 'Linux'
+  environment:
+    LC_CTYPE: en_US.UTF-8
   become: yes
   # replace:
   #   path: '{{ php_fpm_path_to_config_fact }}'
@@ -110,11 +104,10 @@
     backup: yes
   register: php_fpm_config_listen_owner_dokuwiki_state
 
-- name: Config php-fpm.d "listen.group" option 4 CentOS 8+\RHEL and openSUSE
-  when:
-    - (ansible_os_family == 'RedHat')
-      or
-      (ansible_os_family == 'Suse')
+- name: Config php-fpm.d "listen.group" option
+  when: ansible_system == 'Linux'
+  environment:
+    LC_CTYPE: en_US.UTF-8
   become: yes
   # replace:
   #   path: '{{ php_fpm_path_to_config_fact }}'
@@ -129,11 +122,10 @@
     backup: yes
   register: php_fpm_config_listen_group_dokuwiki_state
 
-- name: Config php-fpm.d "listen.mode" option 4 CentOS 8+\RHEL and openSUSE
-  when:
-    - (ansible_os_family == 'RedHat')
-      or
-      (ansible_os_family == 'Suse')
+- name: Config php-fpm.d "listen.mode" option
+  when: ansible_system == 'Linux'
+  environment:
+    LC_CTYPE: en_US.UTF-8
   become: yes
   # replace:
   #   path: '{{ php_fpm_path_to_config_fact }}'
@@ -148,21 +140,18 @@
     backup: yes
   register: php_fpm_config_listen_mode_dokuwiki_state
 
-- name: Ensure php-fpm is running
+- name: Create directory structure 4 php-fpm.socket
   when:
-    - (ansible_os_family == 'RedHat')
-      or
-      (ansible_os_family == 'Suse')
+    - ansible_system == 'Linux'
+    - dokuwiki_php_fpm_connection_type == 'socket'
   become: yes
-  service:
-    name: php-fpm
-    state: started
+  file:
+    path: '{{ php_fpm_path_to_directory_with_socket_fact }}'
+    state: directory
 
 - name: php-fpm restart
-  when:
-    - (ansible_os_family == 'RedHat')
-      or
-      (ansible_os_family == 'Suse')
+  when: 
+    - ansible_system == 'Linux'
     # - php_fpm_dokuwiki_state.changed == true
     - php_fpm_config_user_dokuwiki_state.changed
       or
@@ -175,16 +164,23 @@
       php_fpm_config_listen_mode_dokuwiki_state.changed
   become: yes
   service:
-    name: php-fpm
+    name: '{{ php_fpm_service_name_fact }}'
     state: restarted
 
-- name: Chmod php-fpm socket 4 CentOS 8+\RHEL and openSUSE
+- name: Ensure php-fpm is running
+  when: ansible_system == 'Linux'
+  become: yes
+  service:
+    name: '{{ php_fpm_service_name_fact }}'
+    state: started
+
+- name: Chmod php-fpm socket
   when:
-    - ansible_os_family == 'RedHat'
+    - ansible_system == 'Linux'
     - dokuwiki_php_fpm_connection_type == 'socket'
   become: yes
   file:
     path: '{{ dokuwiki_php_fpm_connection_address }}'
-    owner: www-data
-    group: www-data
+    owner: '{{ dokuwiki_php_fpm_user }}'
+    group: '{{ dokuwiki_php_fpm_group }}'
     # mode: '0660'
