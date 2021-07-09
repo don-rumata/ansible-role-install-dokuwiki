@@ -86,7 +86,7 @@
     path: '{{ php_fpm_path_to_config_fact }}'
     section: www
     option: listen
-    value: "{{ php_fpm_path_to_socket }}"
+    value: "{{ dokuwiki_php_fpm_connection_address }}"
     backup: yes
   register: php_fpm_config_group_dokuwiki_state
 
