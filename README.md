@@ -171,7 +171,12 @@ Apache License, Version 2.0
 
 ## TODO
 
-- Add tests.
+- ~~Add tests.~~
+- Add more tests.
+
+## Known issue
+
+- openSUSE Tumbleweed not work with php-fpm `socket`. (https://ru.stackoverflow.com/q/1303755/191416) Use `dokuwiki_php_fpm_connection_type: ip`, `dokuwiki_php_fpm_connection_address: 127.0.0.1:9000`.
 
 [license-image]: https://img.shields.io/github/license/don-rumata/ansible-role-install-dokuwiki.svg
 [license-url]: https://opensource.org/licenses/Apache-2.0
