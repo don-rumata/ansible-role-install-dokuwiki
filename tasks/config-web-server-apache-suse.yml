@@ -1,0 +1,68 @@
+---
+# AH00526: Syntax error on line 7 of /etc/apache2/vhosts.d/080-dokuwiki.conf: Invalid command 'Order', perhaps misspelled or defined by a module not included in the server configuration
+# https://stackoverflow.com/a/27957034
+- name: Enable Apache module mod_access_compat
+  when:
+    - ansible_pkg_mgr == 'zypper'
+  become: yes
+  apache2_module:
+    name: mod_access_compat
+    identifier: access_compat_module
+    state: present
+
+- name: Configure Apache config 4 DokuWiki
+  when:
+    - ansible_pkg_mgr == 'zypper'
+  become: yes
+  template:
+    src: dokuwiki-apache.j2
+    dest: '{{ apache_path_to_sites_available }}/080-{{ dokuwiki_web_server_config_name }}.conf'
+    mode: '644'
+    backup: yes
+  register: apache_config_dokuwiki_state
+
+# https://www.dokuwiki.org/install:ubuntu#apache_configuration_for_running_dokuwiki_in_public_html
+- name: Enable Apache module userdir
+  when:
+    - ansible_pkg_mgr == 'zypper'
+  become: yes
+  apache2_module:
+    name: userdir
+    state: present
+
+- name: Enable Apache module rewrite
+  when:
+    - ansible_pkg_mgr == 'zypper'
+  become: yes
+  apache2_module:
+    name: rewrite
+    state: present
+
+- name: Enable Apache module rewrite
+  when:
+    - ansible_pkg_mgr == 'zypper'
+  become: yes
+  apache2_module:
+    name: php{{ dokuwiki_opensuse_php_major_version }}
+    state: present
+
+# AH00558
+- name: Config "ServerName" option
+  when:
+    - ansible_pkg_mgr == 'zypper'
+  become: yes
+  lineinfile:
+    path: /etc/apache2/default-server.conf
+    line: ServerName localhost
+    backup: yes
+
+- name: Config Apache user and group
+  when:
+    - ansible_pkg_mgr == 'zypper'
+  become: yes
+  copy:
+    dest: /etc/apache2/uid.conf
+    content: |
+      User {{ dokuwiki_user_web_server }}
+      Group {{ dokuwiki_group_web_server }}
+    backup: yes

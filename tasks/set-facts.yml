@@ -1,11 +1,12 @@
 ---
 - set_fact:
+    # /run/php-fpm/
     php_fpm_path_to_directory_with_socket_fact: "{{ dokuwiki_php_fpm_connection_address | dirname }}"
   when:
     - ansible_system == 'Linux'
 
 - set_fact:
-    apache_service_name_fact: apache2
+    apache_service_name_fact: apache2.service
     apache_path_to_sites_available: /etc/apache2/sites-available
     apache_path_to_sites_enabled: /etc/apache2/sites-enabled
 
@@ -22,7 +23,7 @@
     - ansible_pkg_mgr == 'apt'
 
 - set_fact:
-    apache_service_name_fact: httpd
+    apache_service_name_fact: httpd.service
     apache_path_to_sites_available: /etc/httpd/conf.d
     apache_path_to_sites_enabled: /etc/httpd/conf.d
 
@@ -39,9 +40,11 @@
     - ansible_pkg_mgr == 'dnf'
 
 - set_fact:
-    apache_service_name_fact: httpd
-    apache_path_to_sites_available: /etc/httpd/conf.d
-    apache_path_to_sites_enabled: /etc/httpd/conf.d
+    apache_service_name_fact: apache2.service
+    # apache_path_to_sites_available: /etc/httpd/conf.d
+    # apache_path_to_sites_enabled: /etc/httpd/conf.d
+    apache_path_to_sites_available: /etc/apache2/vhosts.d
+    apache_path_to_sites_enabled: /etc/apache2/vhosts.d
 
     lighttpd_path_to_sites_available: /etc/lighttpd/conf.d
     lighttpd_path_to_sites_enabled: /etc/lighttpd/conf.d

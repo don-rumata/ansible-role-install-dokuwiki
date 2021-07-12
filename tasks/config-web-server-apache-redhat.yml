@@ -60,15 +60,6 @@
 #   register: apache_configtest
 #   changed_when: apache_configtest.rc != 0
 
-- name: Enable and start Apache service
-  when:
-    - ansible_pkg_mgr == 'dnf'
-  become: yes
-  service:
-    name: '{{ apache_service_name_fact }}'
-    state: started
-    enabled: yes
-
 # TEST!!!!!!!!!!!!!!!!!
 
 # https://www.dokuwiki.org/install:ubuntu#apache_configuration_for_running_dokuwiki_in_public_html
@@ -95,3 +86,4 @@
   #   src: /etc/apache2/mods-available/rewrite.load
   #   dest: /etc/apache2/mods-enabled/rewrite.load
   #   state: link
+  

@@ -18,3 +18,25 @@
     name:
       - httpd
     state: present
+
+# https://en.opensuse.org/SDB:Apache_FastCGI_and_PHP-FPM_configuration
+- name: Install Apache 4 openSUSE
+  when:
+    - ansible_os_family == 'Suse'
+    - ansible_pkg_mgr == 'zypper'
+  become: yes
+  package:
+    name:
+      - apache2
+      - apache2-mod_php{{ dokuwiki_opensuse_php_major_version }}
+    state: present
+
+#---
+
+- name: Enable and start Apache service
+  when: ansible_system == 'Linux'
+  become: yes
+  service:
+    name: '{{ apache_service_name_fact }}'
+    state: started
+    enabled: yes

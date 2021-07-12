@@ -13,13 +13,13 @@ Install [DokuWiki](https://www.dokuwiki.org/) for Linux.
     - name: Fedora
       versions:
         - 33
+        - 34
     - name: Ubuntu
       versions:
         - bionic
         - focal
     - name: Debian
       version:
-        - jessie
         - stretch
         - buster
         - oldstable
@@ -27,10 +27,10 @@ Install [DokuWiki](https://www.dokuwiki.org/) for Linux.
         - testing
     - name: EL (CentOS)
       versions:
-        - 7
         - 8
     - name: opensuse
       vesrion:
+        - 15.3
         - tumbleweed
 ```
 

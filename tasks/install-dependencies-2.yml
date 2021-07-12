@@ -20,10 +20,8 @@
 # https://www.dokuwiki.org/requirements
 - name: Install deps 4 DokuWiki 4 Debian based distro
   when:
-    # # - ansible_distribution == 'Ubuntu'
     - ansible_os_family == 'Debian'
     - ansible_pkg_mgr == 'apt'
-    # - ansible_system == 'Linux'
   become: yes
   package:
     name:
@@ -49,13 +47,12 @@
       # - ghostscript
       # # - gsfonts
       # - hicolor-icon-theme
-      
+
       # Вынести в отдельную таску.
       - imagemagick
 
       - poppler-data
     state: present
-    # install_recommends: yes
 
 - name: Install deps 4 DokuWiki 4 Fedora\CentOS 8+\RHEL
   when:
@@ -88,10 +85,6 @@
       - php{{ dokuwiki_opensuse_php_major_version }}-json
       - php{{ dokuwiki_opensuse_php_major_version }}-mbstring
       - ImageMagick
-
-# TODO. May be.
-# sudo systemctl enable php-fpm.service
-
 
 - name: Get installed status php
   when: ansible_system == 'Linux'

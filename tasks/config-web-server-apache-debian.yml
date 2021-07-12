@@ -52,23 +52,6 @@
 #   tags:
 #     - www-port
 
-- name: Validate Apache configuration
-  when:
-    - ansible_pkg_mgr == 'apt'
-  become: yes
-  command: apache2ctl configtest
-  register: apache_configtest
-  changed_when: apache_configtest.rc != 0
-
-- name: Enable and start Apache service
-  when:
-    - ansible_pkg_mgr == 'apt'
-  become: yes
-  service:
-    name: '{{ apache_service_name_fact }}'
-    state: started
-    enabled: yes
-
 # https://www.dokuwiki.org/install:ubuntu#apache_configuration_for_running_dokuwiki_in_public_html
 - name: Enable Apache module userdir
   when:
@@ -93,3 +76,11 @@
   #   src: /etc/apache2/mods-available/rewrite.load
   #   dest: /etc/apache2/mods-enabled/rewrite.load
   #   state: link
+
+- name: Validate Apache configuration
+  when:
+    - ansible_pkg_mgr == 'apt'
+  become: yes
+  command: apache2ctl configtest
+  register: apache_configtest
+  changed_when: apache_configtest.rc != 0

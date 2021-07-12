@@ -6,9 +6,9 @@
 
 - include_tasks: install-dependencies-2.yml
 
-- include_tasks: install-web-server-{{ dokuwiki_web_server_name }}.yml
-
 - include_tasks: set-facts.yml
+
+- include_tasks: install-web-server-{{ dokuwiki_web_server_name }}.yml
 
 - include_tasks: create-users-and-groups.yml
 
