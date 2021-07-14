@@ -38,8 +38,8 @@
 - name: Config php-fpm.d "user" option
   when: ansible_system == 'Linux'
   # https://stackoverflow.com/a/49127686
-  environment:
-    LC_CTYPE: en_US.UTF-8
+  # environment:
+  #   LC_CTYPE: en_US.UTF-8
   become: yes
   # replace:
   #   path: '{{ php_fpm_path_to_config_fact }}'
@@ -56,8 +56,8 @@
 
 - name: Config php-fpm.d "group" option
   when: ansible_system == 'Linux'
-  environment:
-    LC_CTYPE: en_US.UTF-8
+  # environment:
+  #   LC_CTYPE: en_US.UTF-8
   become: yes
   # replace:
   #   path: '{{ php_fpm_path_to_config_fact }}'
@@ -74,8 +74,8 @@
 
 - name: Config php-fpm.d "listen" option
   when: ansible_system == 'Linux'
-  environment:
-    LC_CTYPE: en_US.UTF-8
+  # environment:
+  #   LC_CTYPE: en_US.UTF-8
   become: yes
   ini_file:
     path: '{{ php_fpm_path_to_config_fact }}'
@@ -88,8 +88,8 @@
 # https://serveradmin.ru/ustanovka-i-nastroyka-nginx-php-fpm-php7-1-na-centos-7/
 - name: Config php-fpm.d "listen.owner" option
   when: ansible_system == 'Linux'
-  environment:
-    LC_CTYPE: en_US.UTF-8
+  # environment:
+  #   LC_CTYPE: en_US.UTF-8
   become: yes
   # replace:
   #   path: '{{ php_fpm_path_to_config_fact }}'
@@ -106,8 +106,8 @@
 
 - name: Config php-fpm.d "listen.group" option
   when: ansible_system == 'Linux'
-  environment:
-    LC_CTYPE: en_US.UTF-8
+  # environment:
+  #   LC_CTYPE: en_US.UTF-8
   become: yes
   # replace:
   #   path: '{{ php_fpm_path_to_config_fact }}'
@@ -124,8 +124,8 @@
 
 - name: Config php-fpm.d "listen.mode" option
   when: ansible_system == 'Linux'
-  environment:
-    LC_CTYPE: en_US.UTF-8
+  # environment:
+  #   LC_CTYPE: en_US.UTF-8
   become: yes
   # replace:
   #   path: '{{ php_fpm_path_to_config_fact }}'

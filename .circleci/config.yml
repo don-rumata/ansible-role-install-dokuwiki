@@ -1,0 +1,180 @@
+---
+# https://rtfm.co.ua/circleci-obzor-continuous-integration-servisa/
+# https://circleci.com/orbs/registry/orb/orbss/ansible-ssh#commands-ansible-playbook
+# https://circleci.com/docs/2.0/docker-image-tags.json
+# https://circleci.com/docs/2.0/sample-config/
+# https://circleci.com/docs/2.0/reusing-config/#executor
+
+version: 2.1
+
+# https://circleci.com/docs/2.0/reusing-config/#using-the-parameters-declaration
+commands:
+
+  command-run-ansible-test:
+    description: "Run Ansible test"
+    parameters:
+      where:
+        type: string
+        default: '"localhost," -c local'
+      path-to-test-yaml-file:
+        type: string
+        default: "tests/test.yml"
+      verbose_level:
+        type: string
+        default: vvv
+    steps:
+      - run:
+          name:
+          # command: ansible-playbook -i "localhost," -c local tests/test.yml -vvv
+          command: ansible-playbook -i << parameters.where >> << parameters.path-to-test-yaml-file >> -<< parameters.verbose_level >>
+
+# https://circleci.com/docs/2.0/pipeline-variables/#pipeline-parameters-in-configuration
+parameters:
+
+  parameter-working-directory:
+    type: string
+    default: "~/.ansible/roles/ansible-role-install-dokuwiki"
+
+  parameter-resource-class:
+    type: string
+    default: "small"
+
+executors:
+
+  executor-centos-8:
+    resource_class: << pipeline.parameters.parameter-resource-class >>
+    working_directory: << pipeline.parameters.parameter-working-directory >>
+    docker:
+      - image: diodonfrost/ansible-centos:8
+
+  executor-fedora-33:
+    resource_class: << pipeline.parameters.parameter-resource-class >>
+    working_directory: << pipeline.parameters.parameter-working-directory >>
+    docker:
+      - image: diodonfrost/ansible-fedora:33
+
+  executor-fedora-34:
+    resource_class: << pipeline.parameters.parameter-resource-class >>
+    working_directory: << pipeline.parameters.parameter-working-directory >>
+    docker:
+      - image: diodonfrost/ansible-fedora:34
+
+  executor-ubuntu-18-04:
+    resource_class: << pipeline.parameters.parameter-resource-class >>
+    working_directory: << pipeline.parameters.parameter-working-directory >>
+    docker:
+      - image: diodonfrost/ansible-ubuntu:18.04
+
+  executor-ubuntu-20-04:
+    resource_class: << pipeline.parameters.parameter-resource-class >>
+    working_directory: << pipeline.parameters.parameter-working-directory >>
+    docker:
+      - image: diodonfrost/ansible-ubuntu:20.04
+
+  # https://www.debian.org/releases/
+  executor-debian-oldstable:
+    resource_class: << pipeline.parameters.parameter-resource-class >>
+    working_directory: << pipeline.parameters.parameter-working-directory >>
+    docker:
+      - image: diodonfrost/ansible-debian:9
+
+  executor-debian-stable:
+    resource_class: << pipeline.parameters.parameter-resource-class >>
+    working_directory: << pipeline.parameters.parameter-working-directory >>
+    docker:
+      - image: diodonfrost/ansible-debian:10
+
+  # executor-debian-testing:
+  #   resource_class: << pipeline.parameters.parameter-resource-class >>
+  #   docker:
+  #     - image: circleci/buildpack-deps:testing
+
+  executor-opensuse-leap:
+    resource_class: << pipeline.parameters.parameter-resource-class >>
+    working_directory: << pipeline.parameters.parameter-working-directory >>
+    docker:
+      - image: diodonfrost/ansible-opensuse:leap
+
+  # executor-opensuse-tumbleweed:
+  #   resource_class: << pipeline.parameters.parameter-resource-class >>
+  #   working_directory: << pipeline.parameters.parameter-working-directory >>
+  #   docker:
+  #     - image: diodonfrost/ansible-opensuse:tumbleweed
+
+jobs:
+
+  job-run-ansible-in-centos-8:
+    executor: executor-fedora-8
+    steps:
+      - checkout
+      - command-run-ansible-test
+
+  job-run-ansible-in-fedora-33:
+    executor: executor-fedora-33
+    steps:
+      - checkout
+      - command-run-ansible-test
+
+  job-run-ansible-in-fedora-34:
+    executor: executor-fedora-34
+    steps:
+      - checkout
+      - command-run-ansible-test
+
+  job-run-ansible-in-ubuntu-18-04:
+    executor: executor-ubuntu-18-04
+    steps:
+      - checkout
+      - command-run-ansible-test
+
+  job-run-ansible-in-ubuntu-20-04:
+    executor: executor-ubuntu-20-04
+    steps:
+      - checkout
+      - command-run-ansible-test
+
+  job-run-ansible-in-debian-oldstable:
+    executor: executor-debian-oldstable
+    steps:
+      - checkout
+      - command-run-ansible-test
+
+  job-run-ansible-in-debian-stable:
+    executor: executor-debian-stable
+    steps:
+      - checkout
+      - command-run-ansible-test
+
+  # job-run-ansible-in-debian-testing:
+  #   executor: executor-debian-testing
+  #   steps:
+  #     - checkout
+  #     - command-run-ansible-test
+
+  job-run-ansible-in-opensuse-leap:
+    executor: executor-opensuse-leap
+    steps:
+      - checkout
+      - command-run-ansible-test
+
+  # job-run-ansible-in-opensuse-tumbleweed:
+  #   executor: executor-opensuse-tumbleweed
+  #   steps:
+  #     - checkout
+  #     - command-run-ansible-test
+
+workflows:
+
+  workflow-run-tests:
+    jobs:
+      - job-run-ansible-in-centos-8
+      - job-run-ansible-in-fedora-33
+      - job-run-ansible-in-fedora-34
+      - job-run-ansible-in-ubuntu-18-04
+      - job-run-ansible-in-ubuntu-20-04
+      - job-run-ansible-in-debian-oldstable
+      - job-run-ansible-in-debian-stable
+      # TODO
+      # - job-run-ansible-in-debian-testing
+      - job-run-ansible-in-opensuse-leap
+      # - job-run-ansible-in-opensuse-tumbleweed
