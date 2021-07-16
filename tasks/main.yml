@@ -12,7 +12,6 @@
 
 - include_tasks: create-users-and-groups.yml
 
-# - include_vars: test-include-env.yml
 - include_tasks: config-php-fpm.yml
 
 # https://serverfault.com/a/875292
