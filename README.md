@@ -171,8 +171,7 @@ Apache License, Version 2.0
 
 ## TODO
 
-- ~~Add tests.~~
-- Add more tests.
+- Add tests.
 
 ## Known issue
 
