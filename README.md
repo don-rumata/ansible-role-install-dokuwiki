@@ -31,7 +31,8 @@ Install [DokuWiki](https://www.dokuwiki.org/) for Linux.
     - name: opensuse
       vesrion:
         - 15.3
-        - tumbleweed
+        # TODO
+        # - tumbleweed
 ```
 
 ### Table style
