@@ -4,7 +4,7 @@
   when: ansible_system == 'Linux'
   uri:
     # url: http://{{ inventory_hostname }}{{dokuwiki_www_dir }}/data/pages/wiki/dokuwiki.txt
-    url: http://localhost/{{dokuwiki_www_dir }}/data/pages/wiki/dokuwiki.txt
+    url: http://localhost:{{ dokuwiki_www_port}}/{{ dokuwiki_www_dir }}/data/pages/wiki/dokuwiki.txt
     method: GET
     return_content: no
     use_proxy: no
@@ -15,7 +15,7 @@
 - name: Check main page access
   when: ansible_system == 'Linux'
   uri:
-    url: http://localhost/{{ dokuwiki_www_dir }}
+    url: http://localhost:{{ dokuwiki_www_port}}/{{ dokuwiki_www_dir }}
     method: GET
     return_content: yes
     use_proxy: no

@@ -131,11 +131,29 @@ dokuwiki_interface_lang: en
 dokuwiki_opensuse_php_major_version: 7
 ```
 
+## HowTo
+
+### How to install role
+
+Over `ansible-galaxy`:
+
+```bash
+ansible-galaxy install don_rumata.ansible_role_install_dokuwiki
+```
+
+Over `bash+git`:
+
+```bash
+mkdir -p "$HOME/.ansible/roles"
+cd "$HOME/.ansible/roles"
+git clone https://github.com/don-rumata/ansible-role-install-dokuwiki don_rumata.ansible_role_install_dokuwiki
+```
+
 ## Example Playbooks
 
 ### I
 
-Install latest stable DokuWiki on Linux:
+Install latest stable `DokuWiki` on Linux with `nginx`:
 
 `install-dokuwiki.yml`:
 
@@ -146,7 +164,7 @@ Install latest stable DokuWiki on Linux:
   serial:
     - "100%"
   roles:
-    - ansible-role-install-dokuwiki
+    - don_rumata.ansible_role_install_dokuwiki
   tasks:
 ```
 
@@ -159,6 +177,26 @@ Install latest stable DokuWiki on Linux:
 
 ```bash
 ansible-playbook -i ./dokuwiki-inventory.ini ./install-dokuwiki.yml
+```
+
+### II
+
+Install latest stable `DokuWiki` on Linux with `apache`, super secret password and russian language:
+
+`install-dokuwiki.yml`:
+
+```yaml
+- name: Install DokuWiki
+  hosts: all
+  strategy: free
+  serial:
+    - "100%"
+  roles:
+    - role: don_rumata.ansible_role_install_dokuwiki
+      dokuwiki_web_server_name: apache
+      dokuwiki_admin_password: damtoneruoyfinevedamerauoyyhwnialpxeotdrahyrevevahsufotsomehtekildamneebeviwonkidamneebsyawlaevi
+      dokuwiki_interface_lang: ru
+  tasks:
 ```
 
 ## License
@@ -175,7 +213,26 @@ Apache License, Version 2.0
 
 ## Known issue
 
-- openSUSE Tumbleweed not work with php-fpm `socket`. (https://ru.stackoverflow.com/q/1303755/191416) Use `dokuwiki_php_fpm_connection_type: ip`, `dokuwiki_php_fpm_connection_address: 127.0.0.1:9000`.
+- openSUSE Tumbleweed [not work](https://ru.stackoverflow.com/q/1303755/191416) with php-fpm `socket`. Use `dokuwiki_php_fpm_connection_type: ip`, `dokuwiki_php_fpm_connection_address: 127.0.0.1:9000`.
+- Error:
+
+```none
+"module_stdout": "\r\nTraceback (most recent call last):\r\n  File \"/home/ansible-test-user/.ansible/tmp/ansible-tmp-1626521566.63-15344-118601205128264/AnsiballZ_ini_file.py\", line 102, in <module>\r\n    _ansiballz_main()\r\n  File \"/home/ansible-test-user/.ansible/tmp/ansible-tmp-1626521566.63-15344-118601205128264/AnsiballZ_ini_file.py\", line 94, in _ansiballz_main\r\n    invoke_module(zipped_mod, temp_path, ANSIBALLZ_PARAMS)\r\n  File \"/home/ansible-test-user/.ansible/tmp/ansible-tmp-1626521566.63-15344-118601205128264/AnsiballZ_ini_file.py\", line 40, in invoke_module\r\n    runpy.run_module(mod_name='ansible.modules.files.ini_file', init_globals=None, run_name='__main__', alter_sys=True)\r\n  File \"/usr/lib/python3.8/runpy.py\", line 207, in run_module\r\n    return _run_module_code(code, init_globals, run_name, mod_spec)\r\n  File \"/usr/lib/python3.8/runpy.py\", line 97, in _run_module_code\r\n    _run_code(code, mod_globals, init_globals,\r\n  File \"/usr/lib/python3.8/runpy.py\", line 87, in _run_code\r\n    exec(code, run_globals)\r\n  File \"/tmp/ansible_ini_file_payload_c_pldhft/ansible_ini_file_payload.zip/ansible/modules/files/ini_file.py\", line 342, in <module>\r\n  File \"/tmp/ansible_ini_file_payload_c_pldhft/ansible_ini_file_payload.zip/ansible/modules/files/ini_file.py\", line 322, in main\r\n  File \"/tmp/ansible_ini_file_payload_c_pldhft/ansible_ini_file_payload.zip/ansible/modules/files/ini_file.py\", line 156, in do_ini\r\n  File \"/usr/lib/python3.8/encodings/ascii.py\", line 26, in decode\r\n    return codecs.ascii_decode(input, self.errors)[0]\r\nUnicodeDecodeError: 'ascii' codec can't decode byte 0xc2 in position 1032: ordinal not in range(128)\r\n"
+```
+
+For fix it, use: `LC_CTYPE: en_US.UTF-8` or `LC_CTYPE: C` in `environment`. Like:
+
+```yaml
+  - name: Install DokuWiki
+    hosts: all
+    strategy: free
+    serial:
+      - "100%"
+    roles:
+      - role: don_rumata.ansible_role_install_dokuwiki
+        environment:
+          LC_CTYPE: en_US.UTF-8
+```
 
 [license-image]: https://img.shields.io/github/license/don-rumata/ansible-role-install-dokuwiki.svg
 [license-url]: https://opensource.org/licenses/Apache-2.0
