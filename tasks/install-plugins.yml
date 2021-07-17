@@ -1,0 +1,16 @@
+---
+# https://www.dokuwiki.org/plugin:tag
+- name: Install plugin:tag.
+  when: ansible_system == 'Linux'
+  vars:
+    plugin_dir_name: tag
+  become: yes
+  unarchive:
+    src: https://github.com/dokufreaks/plugin-tag/tarball/master
+    dest: '{{ dokuwiki_fs_dir }}/lib/plugins/{{ plugin_dir_name }}'
+    remote_src: yes
+    owner: www-data
+    group: www-data
+    mode: '{{ dokuwiki_chmod }}'
+    extra_opts:
+      - --strip-components=1
