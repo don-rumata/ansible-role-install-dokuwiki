@@ -1,6 +1,6 @@
 # Ansible Role: Install DokuWiki
 
-[![License][license-image]][license-url] [![Ansible Galaxy][ansible-galaxy-image]][ansible-galaxy-url]
+[![License][license-image]][license-url] [![Ansible Galaxy][ansible-galaxy-image]][ansible-galaxy-url] [![Ansible Galaxy Quality][ansible-galaxy-quality-image]][ansible-galaxy-url]
 
 Install [DokuWiki](https://www.dokuwiki.org/) for Linux.
 
@@ -240,3 +240,5 @@ For fix it, use: `LC_CTYPE: en_US.UTF-8` or `LC_CTYPE: C` in `environment`. Like
 
 [ansible-galaxy-image]: https://img.shields.io/badge/ansible_galaxy-don__rumata.ansible__role__install__dokuwiki-blue.svg
 [ansible-galaxy-url]: https://galaxy.ansible.com/don_rumata/ansible_role_install_dokuwiki
+
+[ansible-galaxy-quality-image]: https://img.shields.io/ansible/quality/55672
