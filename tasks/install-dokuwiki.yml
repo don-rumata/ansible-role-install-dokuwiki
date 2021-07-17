@@ -7,8 +7,8 @@
   file:
     path: '{{ dokuwiki_fs_dir }}'
     state: directory
-    owner: www-data
-    group: www-data
+    owner: '{{ dokuwiki_user_web_server }}'
+    group: '{{ dokuwiki_group_web_server }}'
     mode: '{{ dokuwiki_chmod }}'
 
 - name: Download and extact DokuWiki stable
@@ -18,8 +18,8 @@
     src: '{{ dokuwiki_url_archive }}'
     dest: '{{ dokuwiki_fs_dir }}'
     remote_src: yes
-    owner: www-data
-    group: www-data
+    owner: '{{ dokuwiki_user_web_server }}'
+    group: '{{ dokuwiki_group_web_server }}'
     mode: '{{ dokuwiki_chmod }}'
     extra_opts:
       - --strip-components=1

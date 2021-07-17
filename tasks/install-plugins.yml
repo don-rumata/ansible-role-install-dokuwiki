@@ -9,8 +9,8 @@
     src: https://github.com/dokufreaks/plugin-tag/tarball/master
     dest: '{{ dokuwiki_fs_dir }}/lib/plugins/{{ plugin_dir_name }}'
     remote_src: yes
-    owner: www-data
-    group: www-data
+    owner: '{{ dokuwiki_user_web_server }}'
+    group: '{{ dokuwiki_group_web_server }}'
     mode: '{{ dokuwiki_chmod }}'
     extra_opts:
       - --strip-components=1

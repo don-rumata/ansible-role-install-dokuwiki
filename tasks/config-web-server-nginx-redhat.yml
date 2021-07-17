@@ -19,7 +19,7 @@
   replace:
     path: /etc/nginx/nginx.conf
     regexp: "^user nginx"
-    replace: 'user www-data'
+    replace: 'user {{ dokuwiki_user_web_server }}'
     backup: yes
   # register: nginx_config_dokuwiki_state
 

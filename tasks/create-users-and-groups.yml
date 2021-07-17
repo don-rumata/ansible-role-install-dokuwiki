@@ -18,7 +18,7 @@
     name: '{{ dokuwiki_user_web_server }}'
     group: '{{ dokuwiki_group_web_server }}'
     home: '{{ dokuwiki_home_web_server }}'
-    create_home: yes
+    create_home: no
     shell: /usr/sbin/nologin
     state: present
     system: yes
@@ -29,7 +29,7 @@
   become: yes
   user:
     name: "{{ item }}"
-    groups: www-data
+    groups: '{{ dokuwiki_group_web_server }}'
     append: yes
   with_items:
     - apache

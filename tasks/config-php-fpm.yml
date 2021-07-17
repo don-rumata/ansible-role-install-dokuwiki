@@ -41,11 +41,6 @@
   # environment:
   #   LC_CTYPE: en_US.UTF-8
   become: yes
-  # replace:
-  #   path: '{{ php_fpm_path_to_config_fact }}'
-  #   regexp: "^user = apache"
-  #   replace: 'user = www-data'
-  #   backup: yes
   ini_file:
     path: '{{ php_fpm_path_to_config_fact }}'
     section: www
@@ -59,11 +54,6 @@
   # environment:
   #   LC_CTYPE: en_US.UTF-8
   become: yes
-  # replace:
-  #   path: '{{ php_fpm_path_to_config_fact }}'
-  #   regexp: "^group = apache"
-  #   replace: 'group = www-data'
-  #   backup: yes
   ini_file:
     path: '{{ php_fpm_path_to_config_fact }}'
     section: www
@@ -91,11 +81,6 @@
   # environment:
   #   LC_CTYPE: en_US.UTF-8
   become: yes
-  # replace:
-  #   path: '{{ php_fpm_path_to_config_fact }}'
-  #   regexp: "^;listen.owner = nobody"
-  #   replace: 'listen.owner = www-data'
-  #   backup: yes
   ini_file:
     path: '{{ php_fpm_path_to_config_fact }}'
     section: www
@@ -109,11 +94,6 @@
   # environment:
   #   LC_CTYPE: en_US.UTF-8
   become: yes
-  # replace:
-  #   path: '{{ php_fpm_path_to_config_fact }}'
-  #   regexp: "^;listen.group = nobody"
-  #   replace: 'listen.group = www-data'
-  #   backup: yes
   ini_file:
     path: '{{ php_fpm_path_to_config_fact }}'
     section: www
@@ -127,11 +107,6 @@
   # environment:
   #   LC_CTYPE: en_US.UTF-8
   become: yes
-  # replace:
-  #   path: '{{ php_fpm_path_to_config_fact }}'
-  #   regexp: "^;listen.mode = 0660"
-  #   replace: 'listen.mode = 0660'
-  #   backup: yes
   ini_file:
     path: '{{ php_fpm_path_to_config_fact }}'
     section: www

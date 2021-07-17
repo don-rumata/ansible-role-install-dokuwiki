@@ -6,8 +6,8 @@
   template:
     src: dokuwiki-local.php.j2
     dest: '{{ dokuwiki_fs_dir }}/conf/local.php'
-    owner: www-data
-    group: www-data
+    owner: '{{ dokuwiki_user_web_server }}'
+    group: '{{ dokuwiki_group_web_server }}'
     mode: '{{ dokuwiki_chmod }}'
     backup: yes
 
@@ -19,8 +19,8 @@
   template:
     src: dokuwiki-users.auth.php.j2
     dest: '{{ dokuwiki_fs_dir }}/conf/users.auth.php'
-    owner: www-data
-    group: www-data
+    owner: '{{ dokuwiki_user_web_server }}'
+    group: '{{ dokuwiki_group_web_server }}'
     mode: '{{ dokuwiki_chmod }}'
     backup: yes
 
@@ -30,8 +30,8 @@
   template:
     src: dokuwiki-acl.auth.php.j2
     dest: '{{ dokuwiki_fs_dir }}/conf/acl.auth.php'
-    owner: www-data
-    group: www-data
+    owner: '{{ dokuwiki_user_web_server }}'
+    group: '{{ dokuwiki_group_web_server }}'
     mode: '{{ dokuwiki_chmod }}'
     backup: yes
 
