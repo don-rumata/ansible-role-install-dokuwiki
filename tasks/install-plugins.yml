@@ -3,14 +3,53 @@
 - name: Install plugin:tag.
   when: ansible_system == 'Linux'
   vars:
-    plugin_dir_name: tag
+    dokuwiki_plugin_url: https://github.com/dokufreaks/plugin-tag/tarball/master
+    dokuwiki_plugin_dir_name: tag
   become: yes
   unarchive:
-    src: https://github.com/dokufreaks/plugin-tag/tarball/master
-    dest: '{{ dokuwiki_fs_dir }}/lib/plugins/{{ plugin_dir_name }}'
+    src: '{{ dokuwiki_plugin_url }}'
+    dest: '{{ dokuwiki_fs_dir }}/lib/plugins/{{ dokuwiki_plugin_dir_name }}'
     remote_src: yes
     owner: '{{ dokuwiki_user_web_server }}'
     group: '{{ dokuwiki_group_web_server }}'
     mode: '{{ dokuwiki_chmod }}'
     extra_opts:
       - --strip-components=1
+
+# https://www.dokuwiki.org/plugin:cloud
+- name: Install plugin:cloud.
+  when: ansible_system == 'Linux'
+  vars:
+    dokuwiki_plugin_url: https://github.com/dokufreaks/plugin-cloud/tarball/master
+    dokuwiki_plugin_dir_name: cloud
+  become: yes
+  unarchive:
+    src: '{{ dokuwiki_plugin_url }}'
+    dest: '{{ dokuwiki_fs_dir }}/lib/plugins/{{ dokuwiki_plugin_dir_name }}'
+    remote_src: yes
+    owner: '{{ dokuwiki_user_web_server }}'
+    group: '{{ dokuwiki_group_web_server }}'
+    mode: '{{ dokuwiki_chmod }}'
+    extra_opts:
+      - --strip-components=1
+
+# https://www.dokuwiki.org/plugin:filelist
+# https://www.dokuwiki.org/plugin:var
+# https://www.dokuwiki.org/plugin:keyboard
+# https://www.dokuwiki.org/plugin:dw2pdf
+# https://www.dokuwiki.org/plugin:odt
+# https://www.dokuwiki.org/plugin:feed
+# https://www.dokuwiki.org/plugin:comment
+# https://www.dokuwiki.org/plugin:discussion
+# https://www.dokuwiki.org/plugin:text
+# https://www.dokuwiki.org/plugin:bookcreator
+# https://www.dokuwiki.org/plugin:csv
+# https://www.dokuwiki.org/plugin:drawio
+# https://www.dokuwiki.org/plugin:mdpage
+# https://www.dokuwiki.org/plugin:gallery
+# https://www.dokuwiki.org/plugin:goto
+# https://www.dokuwiki.org/plugin:searchindex
+# https://www.dokuwiki.org/plugin:upgrade
+# https://www.dokuwiki.org/plugin:vshare
+# TODO https://www.dokuwiki.org/plugin:webdav
+# https://www.dokuwiki.org/plugin:wrap

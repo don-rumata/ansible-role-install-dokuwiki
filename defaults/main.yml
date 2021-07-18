@@ -1,11 +1,11 @@
 ---
 #--- Distrib settings ---#
 
+dokuwiki_url_archive: https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz
 # dokuwiki_url_archive: http://10.10.10.10/soft/dokuwiki/dokuwiki-stable.tgz
 # dokuwiki_url_archive: https://download.dokuwiki.org/src/dokuwiki/dokuwiki-oldstable.tgz
 # dokuwiki_url_archive: http://github.com/splitbrain/dokuwiki/tarball/master
 # dokuwiki_url_archive: https://download.dokuwiki.org/out/dokuwiki-51907416a10f9ac6818c982ae15d7b2a.tgz
-dokuwiki_url_archive: https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz
 
 #--- Local FS settings ---#
 
@@ -41,11 +41,11 @@ dokuwiki_php_fpm_user: www-data
 dokuwiki_php_fpm_group: www-data
 
 # This: /etc/php-fpm.d/www.conf -> [www] -> listen = /run/php-fpm/www.sock
-# dokuwiki_php_fpm_connection_type: ip
 dokuwiki_php_fpm_connection_type: socket
+# dokuwiki_php_fpm_connection_type: ip
 
-# dokuwiki_php_fpm_connection_address: 127.0.0.1:9000
 dokuwiki_php_fpm_connection_address: /run/php-fpm/www.sock
+# dokuwiki_php_fpm_connection_address: 127.0.0.1:9000
 
 #--- Site admin settings  ---#
 
@@ -55,6 +55,11 @@ dokuwiki_admin_email: mail@example.com
 dokuwiki_admin_real_name: Malcolm Reynolds
 dokuwiki_title: My shiny metal dokuwiki
 dokuwiki_interface_lang: en
+
+#--- Plugin settings ---#
+
+dokuwiki_install_plugins: true
+# dokuwiki_install_plugins: false
 
 #--- Distro spicific vars ---#
 
