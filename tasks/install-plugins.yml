@@ -26,23 +26,4 @@
   with_items:
     - "{{ dokuwiki_plugin_collection }}"
 
-# https://www.dokuwiki.org/plugin:filelist
-# https://www.dokuwiki.org/plugin:var
-# https://www.dokuwiki.org/plugin:keyboard
-# https://www.dokuwiki.org/plugin:dw2pdf
-# https://www.dokuwiki.org/plugin:odt
-# https://www.dokuwiki.org/plugin:feed
-# https://www.dokuwiki.org/plugin:comment
 # https://www.dokuwiki.org/plugin:discussion
-# https://www.dokuwiki.org/plugin:text
-# https://www.dokuwiki.org/plugin:bookcreator
-# https://www.dokuwiki.org/plugin:csv
-# https://www.dokuwiki.org/plugin:drawio
-# https://www.dokuwiki.org/plugin:mdpage
-# https://www.dokuwiki.org/plugin:gallery
-# https://www.dokuwiki.org/plugin:goto
-# https://www.dokuwiki.org/plugin:searchindex
-# https://www.dokuwiki.org/plugin:upgrade
-# https://www.dokuwiki.org/plugin:vshare
-# TODO https://www.dokuwiki.org/plugin:webdav
-# Дождаться поддержки в Hogfather https://www.dokuwiki.org/plugin:indexmenu

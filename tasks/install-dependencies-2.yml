@@ -1,4 +1,6 @@
 ---
+# TODO. Add php-gd (4 plugin dw2pdf).
+
 - name: Disable install Apache
   when:
     - ansible_os_family == 'Debian'

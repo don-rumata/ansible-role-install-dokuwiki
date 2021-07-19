@@ -1,19 +1,150 @@
 ---
 dokuwiki_plugin_collection:
-  - dokuwiki_plugin_name: tag
-    dokuwiki_plugin_url: https://github.com/dokufreaks/plugin-tag/tarball/master
-    dokuwiki_plugin_dir_name: tag # /var/www/dokuwiki/lib/plugins/tag
-    dokuwiki_plugin_skip_directory_level: 1 # https://unix.stackexchange.com/a/365990
-    dokuwiki_plugin_web_page: https://www.dokuwiki.org/plugin:tag
-
   - dokuwiki_plugin_name: cloud
     dokuwiki_plugin_url: https://github.com/dokufreaks/plugin-cloud/tarball/master
     dokuwiki_plugin_dir_name: cloud
     dokuwiki_plugin_skip_directory_level: 1
     dokuwiki_plugin_web_page: https://www.dokuwiki.org/plugin:cloud
 
+  - dokuwiki_plugin_name: comment
+    dokuwiki_plugin_url: https://github.com/dokufreaks/plugin-comment/tarball/master
+    dokuwiki_plugin_dir_name: comment
+    dokuwiki_plugin_skip_directory_level: 1
+    dokuwiki_plugin_web_page: https://www.dokuwiki.org/plugin:comment
+
+  - dokuwiki_plugin_name: csv
+    dokuwiki_plugin_url: https://github.com/cosmocode/csv/tarball/master
+    dokuwiki_plugin_dir_name: csv
+    dokuwiki_plugin_skip_directory_level: 1
+    dokuwiki_plugin_web_page: https://www.dokuwiki.org/plugin:csv
+
+  - dokuwiki_plugin_name: discussion
+    dokuwiki_plugin_url: https://github.com/dokufreaks/plugin-discussion/tarball/master
+    dokuwiki_plugin_dir_name: discussion
+    dokuwiki_plugin_skip_directory_level: 1
+    dokuwiki_plugin_web_page: https://www.dokuwiki.org/plugin:discussion
+
+  - dokuwiki_plugin_name: drawio
+    dokuwiki_plugin_url: https://github.com/lejmr/dokuwiki-plugin-drawio/tarball/master
+    dokuwiki_plugin_dir_name: drawio
+    dokuwiki_plugin_skip_directory_level: 1
+    dokuwiki_plugin_web_page: https://www.dokuwiki.org/plugin:drawio
+
+  - dokuwiki_plugin_name: dw2pdf
+    dokuwiki_plugin_url: https://github.com/splitbrain/dokuwiki-plugin-dw2pdf/tarball/master
+    dokuwiki_plugin_dir_name: dw2pdf
+    dokuwiki_plugin_skip_directory_level: 1
+    dokuwiki_plugin_web_page: https://www.dokuwiki.org/plugin:dw2pdf
+
+  - dokuwiki_plugin_name: feed
+    dokuwiki_plugin_url: https://github.com/dokufreaks/plugin-feed/tarball/master
+    dokuwiki_plugin_dir_name: feed
+    dokuwiki_plugin_skip_directory_level: 1
+    dokuwiki_plugin_web_page: https://www.dokuwiki.org/plugin:feed
+
+  - dokuwiki_plugin_name: filelist
+    dokuwiki_plugin_url: https://github.com/dokufreaks/plugin-filelist/tarball/master
+    dokuwiki_plugin_dir_name: filelist
+    dokuwiki_plugin_skip_directory_level: 1
+    dokuwiki_plugin_web_page: https://www.dokuwiki.org/plugin:filelist
+
+  - dokuwiki_plugin_name: gallery
+    dokuwiki_plugin_url: https://github.com/splitbrain/dokuwiki-plugin-gallery/tarball/master
+    dokuwiki_plugin_dir_name: gallery
+    dokuwiki_plugin_skip_directory_level: 1
+    dokuwiki_plugin_web_page: https://www.dokuwiki.org/plugin:gallery
+
+  - dokuwiki_plugin_name: goto
+    dokuwiki_plugin_url: https://github.com/cziehr/goto/tarball/master
+    dokuwiki_plugin_dir_name: goto
+    dokuwiki_plugin_skip_directory_level: 1
+    dokuwiki_plugin_web_page: https://www.dokuwiki.org/plugin:goto
+
+  # https://www.dokuwiki.org/config:defer_js
+  # {{indexmenu>.#1|navbar nocookie defer_jsjs#bj-tango.png}}
+  - dokuwiki_plugin_name: indexmenu
+    dokuwiki_plugin_url: https://github.com/samuelet/indexmenu/tarball/master
+    dokuwiki_plugin_dir_name: indexmenu
+    dokuwiki_plugin_skip_directory_level: 1
+    dokuwiki_plugin_web_page: https://www.dokuwiki.org/plugin:indexmenu
+
+  - dokuwiki_plugin_name: keyboard
+    dokuwiki_plugin_url: https://github.com/dokufreaks/plugin-keyboard/tarball/master
+    dokuwiki_plugin_dir_name: keyboard
+    dokuwiki_plugin_skip_directory_level: 1
+    dokuwiki_plugin_web_page: https://www.dokuwiki.org/plugin:keyboard
+
+# Если ставить пачкой - вываливается ошибка про то, что надо поставить composer.
+  # - dokuwiki_plugin_name: mdpage
+  #   dokuwiki_plugin_url: https://github.com/mizunashi-mana/dokuwiki-plugin-mdpage/tarball/master
+  #   dokuwiki_plugin_dir_name: mdpage
+  #   dokuwiki_plugin_skip_directory_level: 1
+  #   dokuwiki_plugin_web_page: https://www.dokuwiki.org/plugin:mdpage
+
+  - dokuwiki_plugin_name: odt
+    dokuwiki_plugin_url: https://github.com/LarsGit223/dokuwiki-plugin-odt/tarball/master
+    dokuwiki_plugin_dir_name: odt
+    dokuwiki_plugin_skip_directory_level: 1
+    dokuwiki_plugin_web_page: https://www.dokuwiki.org/plugin:odt
+
+  - dokuwiki_plugin_name: pagelist
+    dokuwiki_plugin_url: https://github.com/dokufreaks/plugin-pagelist/tarball/master
+    dokuwiki_plugin_dir_name: pagelist
+    dokuwiki_plugin_skip_directory_level: 1
+    dokuwiki_plugin_web_page: https://www.dokuwiki.org/plugin:pagelist
+
+  - dokuwiki_plugin_name: searchindex
+    dokuwiki_plugin_url: https://github.com/splitbrain/dokuwiki-plugin-searchindex/tarball/master
+    dokuwiki_plugin_dir_name: searchindex
+    dokuwiki_plugin_skip_directory_level: 1
+    dokuwiki_plugin_web_page: https://www.dokuwiki.org/plugin:searchindex
+
+  - dokuwiki_plugin_name: tag
+    dokuwiki_plugin_url: https://github.com/dokufreaks/plugin-tag/tarball/master
+    dokuwiki_plugin_dir_name: tag # /var/www/dokuwiki/lib/plugins/tag
+    dokuwiki_plugin_skip_directory_level: 1 # https://unix.stackexchange.com/a/365990
+    dokuwiki_plugin_web_page: https://www.dokuwiki.org/plugin:tag
+
+  - dokuwiki_plugin_name: text
+    dokuwiki_plugin_url: https://github.com/michitux/dokuwiki-plugin-text/tarball/master
+    dokuwiki_plugin_dir_name: text
+    dokuwiki_plugin_skip_directory_level: 1
+    dokuwiki_plugin_web_page: https://www.dokuwiki.org/plugin:text
+
+  - dokuwiki_plugin_name: upgrade
+    dokuwiki_plugin_url: https://github.com/splitbrain/dokuwiki-plugin-upgrade/tarball/master
+    dokuwiki_plugin_dir_name: upgrade
+    dokuwiki_plugin_skip_directory_level: 1
+    dokuwiki_plugin_web_page: https://www.dokuwiki.org/plugin:upgrade
+
+  - dokuwiki_plugin_name: vshare
+    dokuwiki_plugin_url: https://github.com/splitbrain/dokuwiki-plugin-vshare/tarball/master
+    dokuwiki_plugin_dir_name: vshare
+    dokuwiki_plugin_skip_directory_level: 1
+    dokuwiki_plugin_web_page: https://www.dokuwiki.org/plugin:vshare
+
   - dokuwiki_plugin_name: wrap
     dokuwiki_plugin_url: https://github.com/selfthinker/dokuwiki_plugin_wrap/tarball/master
     dokuwiki_plugin_dir_name: wrap
     dokuwiki_plugin_skip_directory_level: 1
     dokuwiki_plugin_web_page: https://www.dokuwiki.org/plugin:wrap
+
+#---
+
+  # - dokuwiki_plugin_name: bookcreator
+  #   dokuwiki_plugin_url: https://github.com/Klap-in/dokuwiki-plugin-bookcreator/tarball/master
+  #   dokuwiki_plugin_dir_name: bookcreator
+  #   dokuwiki_plugin_skip_directory_level: 1
+  #   dokuwiki_plugin_web_page: https://www.dokuwiki.org/plugin:bookcreator
+
+  # - dokuwiki_plugin_name: var
+  #   dokuwiki_plugin_url: https://github.com/dokufreaks/plugin-var/tarball/master
+  #   dokuwiki_plugin_dir_name: var
+  #   dokuwiki_plugin_skip_directory_level: 1
+  #   dokuwiki_plugin_web_page: https://www.dokuwiki.org/plugin:var
+
+  # - dokuwiki_plugin_name: webdav
+  #   dokuwiki_plugin_url: https://github.com/giterlizzi/dokuwiki-plugin-webdav/tarball/master
+  #   dokuwiki_plugin_dir_name: webdav
+  #   dokuwiki_plugin_skip_directory_level: 1
+  #   dokuwiki_plugin_web_page: https://www.dokuwiki.org/plugin:webdav
