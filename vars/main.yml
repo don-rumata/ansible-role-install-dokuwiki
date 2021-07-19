@@ -1,2 +1,19 @@
 ---
-# vars file for ansible-role-install-dokuwiki
+dokuwiki_plugin_collection:
+  - dokuwiki_plugin_name: tag
+    dokuwiki_plugin_url: https://github.com/dokufreaks/plugin-tag/tarball/master
+    dokuwiki_plugin_dir_name: tag # /var/www/dokuwiki/lib/plugins/tag
+    dokuwiki_plugin_skip_directory_level: 1 # https://unix.stackexchange.com/a/365990
+    dokuwiki_plugin_web_page: https://www.dokuwiki.org/plugin:tag
+
+  - dokuwiki_plugin_name: cloud
+    dokuwiki_plugin_url: https://github.com/dokufreaks/plugin-cloud/tarball/master
+    dokuwiki_plugin_dir_name: cloud
+    dokuwiki_plugin_skip_directory_level: 1
+    dokuwiki_plugin_web_page: https://www.dokuwiki.org/plugin:cloud
+
+  - dokuwiki_plugin_name: wrap
+    dokuwiki_plugin_url: https://github.com/selfthinker/dokuwiki_plugin_wrap/tarball/master
+    dokuwiki_plugin_dir_name: wrap
+    dokuwiki_plugin_skip_directory_level: 1
+    dokuwiki_plugin_web_page: https://www.dokuwiki.org/plugin:wrap
