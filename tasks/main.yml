@@ -22,6 +22,5 @@
 - include_tasks: config-dokuwiki.yml
 
 - include_tasks: install-plugins.yml
-  when: dokuwiki_install_plugins
 
 - include_tasks: check-dokuwiki.yml

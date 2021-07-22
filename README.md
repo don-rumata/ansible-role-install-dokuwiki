@@ -2,7 +2,7 @@
 
 [![License][license-image]][license-url] [![Ansible Galaxy][ansible-galaxy-image]][ansible-galaxy-url] [![Ansible Galaxy Quality][ansible-galaxy-quality-image]][ansible-galaxy-url]
 
-Install [DokuWiki](https://www.dokuwiki.org/) for Linux.
+Install [DokuWiki](https://www.dokuwiki.org/) for Linux with [plugins](#plugins).
 
 ## Work on
 
@@ -126,16 +126,54 @@ dokuwiki_admin_real_name: Malcolm Reynolds
 dokuwiki_title: My shiny metal dokuwiki
 dokuwiki_interface_lang: en
 
-#--- Plugin settings ---#
+#--- Plugins settings ---#
 
-dokuwiki_install_plugins: true
-# dokuwiki_install_plugins: false
+dokuwiki_plugins_default_install: true
+# dokuwiki_plugins_default_install: false
+
+#--- Install your plugins ---#
+
+# v1
+# dokuwiki_plugins_custom:
+#   - dokuwiki_plugin_name: apexcharts
+#     dokuwiki_plugin_url: https://github.com/karl257/dokuwiki-plugin-achart/tarball/master
+#     dokuwiki_plugin_dir_name: achart # /var/www/dokuwiki/lib/plugins/achart
+#     dokuwiki_plugin_skip_directory_level: 1 # https://unix.stackexchange.com/a/365990
+#     dokuwiki_plugin_web_page: https://www.dokuwiki.org/plugin:achart
+
+# v2
+# dokuwiki_plugins_custom_url_yaml: https://gist.githubusercontent.com/don-rumata/2a49d341542f3ab0be10bd9842259ebd/raw/17f4fbd0fd71eea230fa47bdf2d4cfec11837d56/dokuwiki_plugins_custom.yml
 
 #--- Distro spicific vars ---#
 
 # zypper info php7
 dokuwiki_opensuse_php_major_version: 7
 ```
+
+## Plugins
+
+Will be installed by default:
+
+- [cloud](https://www.dokuwiki.org/plugin:cloud)
+- [comment](https://www.dokuwiki.org/plugin:comment)
+- [csv](https://www.dokuwiki.org/plugin:csv)
+- [discussion](https://www.dokuwiki.org/plugin:discussion)
+- [drawio](https://www.dokuwiki.org/plugin:drawio)
+- [dw2pdf](https://www.dokuwiki.org/plugin:dw2pdf)
+- [feed](https://www.dokuwiki.org/plugin:feed)
+- [filelist](https://www.dokuwiki.org/plugin:filelist)
+- [gallery](https://www.dokuwiki.org/plugin:gallery)
+- [goto](https://www.dokuwiki.org/plugin:goto)
+- [indexmenu](https://www.dokuwiki.org/plugin:indexmenu)
+- [keyboard](https://www.dokuwiki.org/plugin:keyboard)
+- [odt](https://www.dokuwiki.org/plugin:odt)
+- [pagelist](https://www.dokuwiki.org/plugin:pagelist)
+- [searchindex](https://www.dokuwiki.org/plugin:searchindex)
+- [tag](https://www.dokuwiki.org/plugin:tag)
+- [text](https://www.dokuwiki.org/plugin:text)
+- [upgrade](https://www.dokuwiki.org/plugin:upgrade)
+- [vshare](https://www.dokuwiki.org/plugin:vshare)
+- [wrap](https://www.dokuwiki.org/plugin:wrap)
 
 ## HowTo
 
@@ -159,7 +197,7 @@ git clone https://github.com/don-rumata/ansible-role-install-dokuwiki don_rumata
 
 ### I
 
-Install latest stable `DokuWiki` on Linux with `nginx`:
+Install latest stable `DokuWiki` on Linux with `nginx` with all [plugins](#plugins):
 
 `install-dokuwiki.yml`:
 
@@ -187,7 +225,7 @@ ansible-playbook -i ./dokuwiki-inventory.ini ./install-dokuwiki.yml
 
 ### II
 
-Install latest stable `DokuWiki` on Linux with `apache`, super secret password and russian language:
+Install latest stable `DokuWiki` on Linux with `apache`, super secret password and `ru`ssian language, **without** default [plugins](#plugins):
 
 `install-dokuwiki.yml`:
 
@@ -202,6 +240,32 @@ Install latest stable `DokuWiki` on Linux with `apache`, super secret password a
       dokuwiki_web_server_name: apache
       dokuwiki_admin_password: damtoneruoyfinevedamerauoyyhwnialpxeotdrahyrevevahsufotsomehtekildamneebeviwonkidamneebsyawlaevi
       dokuwiki_interface_lang: ru
+      dokuwiki_plugins_default_install: false
+  tasks:
+```
+
+### III
+
+Install latest stable `DokuWiki` on Linux with `lighttpd`, **without** default [plugins](#plugins), but with custom plugin `apexcharts`:
+
+`install-dokuwiki.yml`:
+
+```yaml
+- name: Install DokuWiki
+  hosts: all
+  strategy: free
+  serial:
+    - "100%"
+  roles:
+    - role: don_rumata.ansible_role_install_dokuwiki
+      dokuwiki_web_server_name: lighttpd
+      dokuwiki_plugins_default_install: false
+      dokuwiki_plugins_custom:
+        - dokuwiki_plugin_name: apexcharts
+          dokuwiki_plugin_url: https://github.com/karl257/dokuwiki-plugin-achart/tarball/master
+          dokuwiki_plugin_dir_name: achart # /var/www/dokuwiki/lib/plugins/achart
+          dokuwiki_plugin_skip_directory_level: 1 # https://unix.stackexchange.com/a/365990
+          dokuwiki_plugin_web_page: https://www.dokuwiki.org/plugin:achart
   tasks:
 ```
 
@@ -216,6 +280,7 @@ Apache License, Version 2.0
 ## TODO
 
 - Add tests.
+- Add support exclude default installed plugins. Like `dokuwiki_plugins_exclude: ["cloud", "comment", "wrap"]`
 
 ## Known issue
 
@@ -239,6 +304,10 @@ For fix it, use: `LC_CTYPE: en_US.UTF-8` or `LC_CTYPE: C` in `environment`. Like
         environment:
           LC_CTYPE: en_US.UTF-8
 ```
+
+## Thanks
+
+- [Arkadiy Illarionov](https://github.com/qarkai)
 
 [license-image]: https://img.shields.io/github/license/don-rumata/ansible-role-install-dokuwiki.svg
 [license-url]: https://opensource.org/licenses/Apache-2.0

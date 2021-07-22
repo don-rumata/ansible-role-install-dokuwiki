@@ -1,6 +1,54 @@
 ---
+- name: Include default plugin list
+  when:
+    - ansible_system == 'Linux'
+    - dokuwiki_plugins_default_install
+  include_vars: vars/dokuwiki_plugin_collection.yml
+
+- name: Get info about custom plugins from url
+  when:
+    - ansible_system == 'Linux'
+    - dokuwiki_plugins_custom_url_yaml is defined
+  uri:
+    url: '{{ dokuwiki_plugins_custom_url_yaml }}'
+    method: GET
+    return_content: yes
+  register: dokuwiki_plugins_custom_url_yaml_result
+
+- name: Set fact about custom plugins info from url
+  when:
+    - ansible_system == 'Linux'
+    - dokuwiki_plugins_custom_url_yaml is defined
+  set_fact:
+    dokuwiki_plugins_custom_url_yaml_fact:
+      "{{ dokuwiki_plugins_custom_url_yaml_result.content
+      | from_yaml }}"
+
+# TODO. Add "soft | uniq".
+# https://stackoverflow.com/a/35107741
+- name: United fact about plugins 4 install
+  when:
+    - ansible_system == 'Linux'
+    - dokuwiki_plugins_default_install
+      or
+      dokuwiki_plugins_custom_url_yaml is defined
+      or
+      dokuwiki_plugins_custom is defined
+  set_fact:
+    docuwiki_plugins_united_info_fact:
+      "{{ dokuwiki_plugin_collection | default(dokuwiki_plugin_collection_null)
+      + dokuwiki_plugins_custom | default(dokuwiki_plugin_collection_null)
+      + dokuwiki_plugins_custom_url_yaml_fact | default(dokuwiki_plugin_collection_null) }}"
+
 - name: Create directory structure 4 plugins
-  when: ansible_system == 'Linux'
+  when:
+    - ansible_system == 'Linux'
+    # - dokuwiki_plugins_default_install == true
+    - dokuwiki_plugins_default_install
+      or
+      dokuwiki_plugins_custom_url_yaml is defined
+      or
+      dokuwiki_plugins_custom is defined
   become: yes
   file:
     path: '{{ dokuwiki_fs_dir }}/lib/plugins/{{ item.dokuwiki_plugin_dir_name }}'
@@ -9,10 +57,16 @@
     mode: '{{ dokuwiki_chmod }}'
     state: directory
   with_items:
-    - "{{ dokuwiki_plugin_collection }}"
+    # - "{{ dokuwiki_plugin_collection }}"
+    # - "{{ dokuwiki_plugins_custom }}"
+    # - "{{ dokuwiki_plugins_custom_url_yaml_fact }}"
+    - "{{ docuwiki_plugins_united_info_fact }}"
 
 - name: Install plugins 4 DokuWiki
-  when: ansible_system == 'Linux'
+  when:
+    - ansible_system == 'Linux'
+    # - dokuwiki_plugins_default_install == true
+    - dokuwiki_plugins_default_install
   become: yes
   unarchive:
     src: '{{ item.dokuwiki_plugin_url }}'
@@ -24,6 +78,9 @@
     extra_opts:
       - --strip-components={{ item.dokuwiki_plugin_skip_directory_level }}
   with_items:
-    - "{{ dokuwiki_plugin_collection }}"
+    # - "{{ dokuwiki_plugin_collection }}"
+    # - "{{ dokuwiki_plugins_custom }}"
+    # - "{{ dokuwiki_plugins_custom_url_yaml_fact }}"
+    - "{{ docuwiki_plugins_united_info_fact }}"
 
 # https://www.dokuwiki.org/plugin:discussion

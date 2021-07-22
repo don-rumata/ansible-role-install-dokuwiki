@@ -56,10 +56,29 @@ dokuwiki_admin_real_name: Malcolm Reynolds
 dokuwiki_title: My shiny metal dokuwiki
 dokuwiki_interface_lang: en
 
-#--- Plugin settings ---#
+#--- Plugins settings ---#
 
-dokuwiki_install_plugins: true
-# dokuwiki_install_plugins: false
+dokuwiki_plugins_default_install: true
+# dokuwiki_plugins_default_install: false
+
+#--- Install your plugins ---#
+
+# v1
+# dokuwiki_plugins_custom:
+#   - dokuwiki_plugin_name: apexcharts
+#     dokuwiki_plugin_url: https://github.com/karl257/dokuwiki-plugin-achart/tarball/master
+#     dokuwiki_plugin_dir_name: achart # /var/www/dokuwiki/lib/plugins/achart
+#     dokuwiki_plugin_skip_directory_level: 1 # https://unix.stackexchange.com/a/365990
+#     dokuwiki_plugin_web_page: https://www.dokuwiki.org/plugin:achart
+
+# v2
+# dokuwiki_plugins_custom_url_yaml: https://gist.githubusercontent.com/don-rumata/2a49d341542f3ab0be10bd9842259ebd/raw/17f4fbd0fd71eea230fa47bdf2d4cfec11837d56/dokuwiki_plugins_custom.yml
+
+# TODO!!!
+# dokuwiki_plugins_exclude:
+#   - cloud
+#   - comment
+#   - wrap
 
 #--- Distro spicific vars ---#
 
